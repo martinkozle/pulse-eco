@@ -10,7 +10,7 @@ PULSE_ECO_BASE_URL = 'https://{city_name}.pulse.eco/rest/{end_point}'
 
 
 class PulseEco:
-    """PulseEco API wrapper
+    """pulse.eco API wrapper
 
     Documentation: https://pulse.eco/restapi
     """
