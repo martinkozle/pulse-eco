@@ -21,9 +21,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Load environmental variables
-      env:
+      env: |
         USERNAME: ${{ secrets.USERNAME }}
         PASSWORD: ${{ secrets.PASSWORD }}
+      run:
+        echo "Loaded auth secrets as environmental variables"
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
