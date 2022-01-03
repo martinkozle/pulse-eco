@@ -3,7 +3,7 @@ import json
 
 import pandas as pd
 
-from . import PulseEco
+from .pulseeco import PulseEco
 
 help_strings = {
     'sensor': 'the unique ID of the sensor',

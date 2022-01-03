@@ -3,7 +3,7 @@ from typing import List, Optional, Tuple, Union
 
 import requests
 
-from .types import DataValue, Overall, Sensor
+from .data_types import DataValue, Overall, Sensor
 
 PULSE_ECO_REST_API_DOCS = 'https://pulse.eco/restapi'
 PULSE_ECO_BASE_URL = 'https://{city_name}.pulse.eco/rest/{end_point}'
