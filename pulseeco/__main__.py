@@ -84,7 +84,7 @@ def add_avg_data_subparser(subparsers: argparse._SubParsersAction) -> None:
                                             help='Get average data')
 
     parser_avg_data.set_defaults(func=avg_data)
-    parser_avg_data.add_argument('--period', help=help_strings['period'],
+    parser_avg_data.add_argument('-D', '--period', help=help_strings['period'],
                                  type=str)
     add_common_args(parser_avg_data, required_type=True)
     add_print_type_args(parser_avg_data)
@@ -110,6 +110,15 @@ def parse_args() -> argparse.Namespace:
     add_sensor_subparser(subparsers)
     add_data_raw_subparser(subparsers)
     add_avg_data_subparser(subparsers)
+    parser_data24h = subparsers.add_parser('data24h', help='Get 24h data')
+    parser_data24h.set_defaults(func=data24h)
+    add_print_type_args(parser_data24h)
+    parser_current = subparsers.add_parser('current', help='Get current data')
+    parser_current.set_defaults(func=current)
+    add_print_type_args(parser_current)
+    parser_overall = subparsers.add_parser('overall', help='Get overall data')
+    parser_overall.set_defaults(func=overall)
+    add_print_type_arg_json(parser_overall)
 
     return parser.parse_args()
 
@@ -119,15 +128,19 @@ def get_session(args: argparse.Namespace) -> PulseEco:
                     base_url=args.base_url)
 
 
+def print_data(data: list, args: argparse.Namespace) -> None:
+    if args.json:
+        print(json.dumps(data, indent=2))
+    elif len(data) > 0 and args.table:
+        print(pd.DataFrame(data))
+    else:
+        print(data)
+
+
 def sensors(args: argparse.Namespace) -> None:
     pulse_eco = get_session(args)
     sensors = pulse_eco.sensors(args.city)
-    if args.json:
-        print(json.dumps(sensors, indent=2))
-    elif args.table:
-        print(pd.DataFrame(sensors))
-    else:
-        print(sensors)
+    print_data(sensors, args)
 
 
 def sensor(args: argparse.Namespace) -> None:
@@ -152,12 +165,7 @@ def data_raw(args: argparse.Namespace) -> None:
         from_=args.from_,
         to=args.to
     )
-    if args.json:
-        print(json.dumps(data, indent=2))
-    elif args.table:
-        print(pd.DataFrame(data))
-    else:
-        print(data)
+    print_data(data, args)
 
 
 def avg_data(args: argparse.Namespace) -> None:
@@ -174,10 +182,26 @@ def avg_data(args: argparse.Namespace) -> None:
         from_=args.from_,
         to=args.to
     )
+    print_data(data, args)
+
+
+def data24h(args: argparse.Namespace) -> None:
+    pulse_eco = get_session(args)
+    data = pulse_eco.data24h(args.city)
+    print_data(data, args)
+
+
+def current(args: argparse.Namespace) -> None:
+    pulse_eco = get_session(args)
+    data = pulse_eco.current(args.city)
+    print_data(data, args)
+
+
+def overall(args: argparse.Namespace) -> None:
+    pulse_eco = get_session(args)
+    data = pulse_eco.overall(args.city)
     if args.json:
         print(json.dumps(data, indent=2))
-    elif args.table:
-        print(pd.DataFrame(data))
     else:
         print(data)
 
