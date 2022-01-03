@@ -40,7 +40,6 @@ class PulseEco:
             params = {}
         url = self.base_url.format(city_name=city_name, end_point=end_point)
         response = self.session.get(url, params=params)
-        print(response.url)
         response.raise_for_status()
         return response.json()
 
