@@ -188,19 +188,21 @@ class PulseEco:
 
         Example:
 
-        {
-            'cityName': 'skopje',
-            'values': {
-                'no2': '22',
-                'o3': '4',
-                'pm25': '53',
-                'pm10': '73',
-                'temperature': '7',
-                'humidity': '71',
-                'pressure': '992',
-                'noise_dba': '43'
+        .. code-block:: python
+        
+            {
+                'cityName': 'skopje',
+                'values': {
+                    'no2': '22',
+                    'o3': '4',
+                    'pm25': '53',
+                    'pm10': '73',
+                    'temperature': '7',
+                    'humidity': '71',
+                    'pressure': '992',
+                    'noise_dba': '43'
+                }
             }
-        }
 
         :param city_name: the city name
         :return: overall data for the city
