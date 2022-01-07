@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import pulseeco as pe
 import pytest
@@ -61,27 +61,29 @@ def _test_data_value(data_value):
         assert key in data_value, f'{key} not in data_value'
 
 
-def test_datetime_conversion():
-    test_cases = (
-        ('2018-03-15T02:00:00+01:00', '2018-03-15T02:00:00+01:00'),
-        ('2018-03-15T02:00:00', '2018-03-15T02:00:00+00:00')
-    )
-    for iso_in, iso_out in test_cases:
-        dt = datetime.fromisoformat(iso_in)
-        dt_converted = pe.PulseEco._convert_datetime_to_str(dt)
-        assert iso_out == dt_converted, 'datetime conversion problem'
+def test_split_datetime_span():
+    fr = '2019-03-17T12:00:00'
+    to = '2019-04-03T14:57:03'
+    td = timedelta(days=7)
+    datetimes = pe.split_datetime_span(fr, to, td)
+    expected_datetimes = [
+        (datetime(2019, 3, 17, 12, 0), datetime(2019, 3, 24, 12, 0)),
+        (datetime(2019, 3, 24, 12, 0, 1), datetime(2019, 3, 31, 12, 0)),
+        (datetime(2019, 3, 31, 12, 0, 1), datetime(2019, 4, 3, 14, 57, 3))
+    ]
+    assert datetimes == expected_datetimes, 'incorrect datetime split'
 
 
 def test_data_raw(pulse_eco: pe.PulseEco):
     """Test dataRaw endpoint"""
     from_ = '2017-03-15T02:00:00+01:00'
-    to = '2017-03-19T12:00:00+01:00'
+    to = '2017-04-19T12:00:00+01:00'
     data_raw = pulse_eco.data_raw(
         city_name='skopje',
-        sensor_id='1001',
-        type='pm10',
         from_=from_,
-        to=to
+        to=to,
+        sensor_id='1001',
+        type='pm10'
     )
     assert_is_non_empty_list(data_raw)
     data_value = data_raw[0]
@@ -91,15 +93,15 @@ def test_data_raw(pulse_eco: pe.PulseEco):
 def test_avg_data(pulse_eco: pe.PulseEco):
     """Test average endpoint"""
     from_ = '2019-03-01T12:00:00+00:00'
-    to = '2019-07-01T12:00:00+00:00'
+    to = '2020-05-01T12:00:00+00:00'
     for period in ('day', 'week', 'month'):
         avg_data = pulse_eco.avg_data(
             city_name='skopje',
             period=period,
-            type='pm10',
-            sensor_id='-1',
             from_=from_,
-            to=to
+            to=to,
+            type='pm10',
+            sensor_id='-1'
         )
         assert_is_non_empty_list(avg_data)
         data_value = avg_data[0]

@@ -8,11 +8,7 @@ from .pulseeco import PulseEco
 help_strings = {
     'sensor': 'the unique ID of the sensor',
     'period': 'the period of the data (day, week, month)',
-    'position': 'latitude and longitude GPS coordinates of the sensor',
     'type': 'the type ID of the sensor',
-    'description': 'short description / name of the sensor',
-    'comments': 'any other comments about the sensor',
-    'status': 'the current status of the sensor',
     'from_': 'the start datetime of the data',
     'to': 'the end datetime of the data'
 }
@@ -55,18 +51,9 @@ def add_common_args(parser: argparse.ArgumentParser,
                     required_type: bool = False) -> None:
     parser.add_argument('-s', '--sensor', help=help_strings['sensor'],
                         type=str, default='-1')
-    parser.add_argument('-p', '--position', help=help_strings['position'],
-                        type=str)
     parser.add_argument('-t', '--type', help=help_strings['type'], type=str,
                         required=required_type)
-    parser.add_argument('-d', '--description',
-                        help=help_strings['description'], type=str)
-    parser.add_argument('-c', '--comments', help=help_strings['comments'],
-                        type=str)
-    parser.add_argument('-S', '--status', help=help_strings['status'],
-                        type=str)
-    parser.add_argument('-f', '--from', help=help_strings['from_'], type=str,
-                        dest='from_')
+    parser.add_argument('-f', '--from', help=help_strings['from_'], type=str)
     parser.add_argument('--to', help=help_strings['to'], type=str)
 
 
@@ -84,7 +71,7 @@ def add_avg_data_subparser(subparsers: argparse._SubParsersAction) -> None:
                                             help='Get average data')
 
     parser_avg_data.set_defaults(func=avg_data)
-    parser_avg_data.add_argument('-D', '--period', help=help_strings['period'],
+    parser_avg_data.add_argument('-p', '--period', help=help_strings['period'],
                                  type=str)
     add_common_args(parser_avg_data, required_type=True)
     add_print_type_args(parser_avg_data)
@@ -157,12 +144,8 @@ def data_raw(args: argparse.Namespace) -> None:
     data = pulse_eco.data_raw(
         args.city,
         sensor_id=args.sensor,
-        position=args.position,
         type=args.type,
-        description=args.description,
-        comments=args.comments,
-        status=args.status,
-        from_=args.from_,
+        from_=vars(args)['from'],
         to=args.to
     )
     print_data(data, args)
@@ -174,12 +157,8 @@ def avg_data(args: argparse.Namespace) -> None:
         args.city,
         period=args.period,
         sensor_id=args.sensor,
-        position=args.position,
         type=args.type,
-        description=args.description,
-        comments=args.comments,
-        status=args.status,
-        from_=args.from_,
+        from_=vars(args)['from'],
         to=args.to
     )
     print_data(data, args)

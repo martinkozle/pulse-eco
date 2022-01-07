@@ -1,18 +1,19 @@
-from datetime import datetime, timezone
+import warnings
+from datetime import datetime, timedelta
 from typing import List, Optional, Tuple, Union
 
 import requests
 
 from .data_types import DataValue, Overall, Sensor
+from .utils import convert_datetime_to_str, split_datetime_span
 
-PULSE_ECO_REST_API_DOCS = 'https://pulse.eco/restapi'
 PULSE_ECO_BASE_URL = 'https://{city_name}.pulse.eco/rest/{end_point}'
+DATA_RAW_MAX_SPAN = timedelta(days=7)
+AVG_DATA_MAX_SPAN = timedelta(days=365)
 
 
 class PulseEco:
     """pulse.eco API wrapper
-
-    Documentation: https://pulse.eco/restapi
     """
 
     def __init__(self, auth: Tuple[str, str],
@@ -23,9 +24,9 @@ class PulseEco:
         :param base_url: the base URL of the API, defaults to
             'https://{city_name}.pulse.eco/rest/{end_point}'
         """
-        self.session = requests.Session()
-        self.session.auth = auth
-        self.base_url = base_url
+        self._session = requests.Session()
+        self._session.auth = auth
+        self._base_url = base_url
 
     def _base_request(self, city_name: str, end_point: str,
                       params: Optional[dict] = None):
@@ -38,8 +39,8 @@ class PulseEco:
         """
         if params is None:
             params = {}
-        url = self.base_url.format(city_name=city_name, end_point=end_point)
-        response = self.session.get(url, params=params)
+        url = self._base_url.format(city_name=city_name, end_point=end_point)
+        response = self._session.get(url, params=params)
         response.raise_for_status()
         return response.json()
 
@@ -60,108 +61,76 @@ class PulseEco:
         """
         return self._base_request(city_name, f'sensor/{sensor_id}')
 
-    @staticmethod
-    def _convert_datetime_to_str(datetime: datetime) -> str:
-        """Convert a datetime object to a string
-
-        :param datetime: a datetime object
-        :return: an isoformat string
-        """
-        if datetime.tzinfo is None:
-            datetime = datetime.replace(tzinfo=timezone.utc)
-        return datetime.isoformat()
-
     def data_raw(
         self,
         city_name: str,
-        *,
+        from_: Union[str, datetime],
+        to: Union[str, datetime],
         sensor_id: Optional[str] = None,
-        position: Optional[str] = None,
-        type: Optional[str] = None,
-        description: Optional[str] = None,
-        comments: Optional[str] = None,
-        status: Optional[str] = None,
-        from_: Optional[Union[str, datetime]] = None,
-        to: Optional[Union[str, datetime]] = None
+        type: Optional[str] = None
     ) -> List[DataValue]:
         """Get raw data for a given query
 
         :param city_name: the city name
-        :param sensor_id: the unique ID of the sensor
-        :param position: latitude and longitude GPS coordinates of the sensor
-        :param type: the type ID of the sensor
-        :param description: short description / name of the sensor
-        :param comments: any other comments about the sensor
-        :param status: the current status of the sensor
         :param from_: the start datetime of the data
         :param to: the end datetime of the data
+        :param sensor_id: the unique ID of the sensor
+        :param type: the type ID of the sensor
         :return: raw data
         """
-        if isinstance(from_, datetime):
-            from_ = self._convert_datetime_to_str(from_)
-        if isinstance(to, datetime):
-            to = self._convert_datetime_to_str(to)
-        params = {
-            'sensorId': sensor_id,
-            'position': position,
-            'type': type,
-            'description': description,
-            'comments': comments,
-            'status': status,
-            'from': from_,
-            'to': to,
-        }
-        params = {k: v for k, v in params.items() if v is not None}
-        return self._base_request(city_name, 'dataRaw', params=params)
+        if sensor_id is None and type is None:
+            warnings.warn(
+                'Warning! If you encounter an error, '
+                'you should probably specify either sensor_id or type.')
+        data = []
+        datetime_spans = split_datetime_span(from_, to, DATA_RAW_MAX_SPAN)
+        for from_temp, to_temp in datetime_spans:
+            params = {
+                'sensorId': sensor_id,
+                'type': type,
+                'from': convert_datetime_to_str(from_temp),
+                'to': convert_datetime_to_str(to_temp),
+            }
+            params = {k: v for k, v in params.items() if v is not None}
+            data += self._base_request(city_name, 'dataRaw', params=params)
+        return data
 
     def avg_data(
         self,
         city_name: str,
         period: str,
-        type: str = None,
-        *,
-        sensor_id: Optional[str] = None,
-        position: Optional[str] = None,
-        description: Optional[str] = None,
-        comments: Optional[str] = None,
-        status: Optional[str] = None,
-        from_: Optional[Union[str, datetime]] = None,
-        to: Optional[Union[str, datetime]] = None
+        from_: Union[str, datetime],
+        to: Union[str, datetime],
+        type: str,
+        sensor_id: Optional[str] = None
     ) -> List[DataValue]:
         """Get average data for a query in given time periods
 
         :param city_name: the city name
         :param period: the period of the data (day, week, month)
-        :param sensor_id: the unique ID of the sensor
-        :param position: latitude and longitude GPS coordinates of the sensor
-        :param type: the type ID of the sensor
-        :param description: short description / name of the sensor
-        :param comments: any other comments about the sensor
-        :param status: the current status of the sensor
         :param from_: the start datetime of the data
         :param to: the end datetime of the data
+        :param type: the type ID of the sensor
+        :param sensor_id: the unique ID of the sensor
         :return: average data
         """
-        if isinstance(from_, datetime):
-            from_ = self._convert_datetime_to_str(from_)
-        if isinstance(to, datetime):
-            to = self._convert_datetime_to_str(to)
         if period not in ('day', 'week', 'month'):
-            raise ValueError(
-                'Invalid value for period. Expected one of: day, week, month')
-        params = {
-            'sensorId': sensor_id,
-            'position': position,
-            'type': type,
-            'description': description,
-            'comments': comments,
-            'status': status,
-            'from': from_,
-            'to': to,
-        }
-        params = {k: v for k, v in params.items() if v is not None}
-        return self._base_request(city_name, f'avgData/{period}',
-                                  params=params)
+            warnings.warn(
+                'Warning! Invalid value for period. '
+                'Should be one of: day, week, month')
+        data = []
+        datetime_spans = split_datetime_span(from_, to, AVG_DATA_MAX_SPAN)
+        for from_temp, to_temp in datetime_spans:
+            params = {
+                'sensorId': sensor_id,
+                'type': type,
+                'from': convert_datetime_to_str(from_temp),
+                'to': convert_datetime_to_str(to_temp),
+            }
+            params = {k: v for k, v in params.items() if v is not None}
+            data += self._base_request(city_name, f'avgData/{period}',
+                                       params=params)
+        return data
 
     def data24h(self, city_name: str) -> List[DataValue]:
         """Get all of the data in the past 24h
@@ -189,7 +158,7 @@ class PulseEco:
         Example:
 
         .. code-block:: python
-        
+
             {
                 'cityName': 'skopje',
                 'values': {
