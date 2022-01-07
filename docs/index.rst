@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Welcome to pulse-eco's documentation!
-====================================
+=====================================
 
 .. toctree::
    :maxdepth: 4
