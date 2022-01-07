@@ -20,6 +20,14 @@ pulseeco.pulseeco module
    :undoc-members:
    :show-inheritance:
 
+pulseeco.utils module
+------------------------
+
+.. automodule:: pulseeco.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 
