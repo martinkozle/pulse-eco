@@ -65,7 +65,7 @@ def test_split_datetime_span():
     fr = '2019-03-17T12:00:00'
     to = '2019-04-03T14:57:03'
     td = timedelta(days=7)
-    datetimes = pe.split_datetime_span(fr, to, td)
+    datetimes = pe.utils.split_datetime_span(fr, to, td)
     expected_datetimes = [
         (datetime(2019, 3, 17, 12, 0), datetime(2019, 3, 24, 12, 0)),
         (datetime(2019, 3, 24, 12, 0, 1), datetime(2019, 3, 31, 12, 0)),
