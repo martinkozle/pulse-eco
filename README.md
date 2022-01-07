@@ -1,5 +1,10 @@
 # pulse-eco
 
+[![PyPI](https://img.shields.io/pypi/v/pulse-eco)](https://pypi.org/project/pulse-eco)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pulse-eco)
+[![GitHub license](https://img.shields.io/github/license/martinkozle/pulse-eco)](https://github.com/martinkozle/pulse-eco/blob/main/LICENSE)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/martinkozle/pulse-eco/Python%20package)
+
 [![pulse.eco logo](https://pulse.eco/img/pulse-logo-horizontal.svg)](https://pulse.eco)
 
 pulse.eco API wrapper for Python.
@@ -32,7 +37,7 @@ pulse.eco API wrapper for Python.
 
 ## Installation
 
-pulse-eco is avialiable on PyPI:
+pulse-eco is avialiable on [PyPI](https://pypi.org/project/pulse-eco):
 
 ```console
 python -m pip install pulse-eco
@@ -103,4 +108,10 @@ optional arguments:
   -P PASSWORD, --password PASSWORD
                         PulseEco API password
   -C CITY, --city CITY  the city name
+```
+
+In order to use table print with the command, you need to either install pandas separately or install pulse-eco with the extra [pandas]:
+
+```console
+python -m pip install pulse-eco[pandas]
 ```

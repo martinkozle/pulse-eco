@@ -1,7 +1,6 @@
 import argparse
 import json
 
-import pandas as pd
 
 from .pulseeco import PulseEco
 
@@ -119,6 +118,7 @@ def print_data(data: list, args: argparse.Namespace) -> None:
     if args.json:
         print(json.dumps(data, indent=2))
     elif len(data) > 0 and args.table:
+        import pandas as pd
         print(pd.DataFrame(data))
     else:
         print(data)
