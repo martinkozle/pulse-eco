@@ -3,7 +3,7 @@
 [![PyPI](https://img.shields.io/pypi/v/pulse-eco)](https://pypi.org/project/pulse-eco)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pulse-eco)
 [![GitHub license](https://img.shields.io/github/license/martinkozle/pulse-eco)](https://github.com/martinkozle/pulse-eco/blob/main/LICENSE)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/martinkozle/pulse-eco/Python%20package)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/martinkozle/pulse-eco/python-package.yml?branch=main)
 
 [![pulse.eco logo](https://pulse.eco/img/pulse-logo-horizontal.svg)](https://pulse.eco)
 
@@ -60,7 +60,7 @@ If the time range is larger than the maximum, the pulseeco module creates multip
 ## Warnings instead of errors
 
 This package does not raise errors for invalid input. Instead it prints warning messages for known bad inputs and makes the API call anyway. So expect an HTTPError.  
-This is because the REST API documentation doesn't cover all possible errors bad inputs. Another reason is because this package is trying to be future proof.
+This is because the REST API documentation doesn't cover all possible errors for bad arguments. Another reason is because this package is trying to be future proof.
 
 To disable these warnings:
 
