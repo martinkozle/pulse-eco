@@ -47,7 +47,7 @@ Requires Python version 3.8+.
 
 ## Documentation
 
-Official pulse.eco REST API documentation can be found on  [pulse.eco/restapi](https://pulse.eco/restapi).  
+Official pulse.eco REST API documentation can be found on  [pulse.eco/restapi](https://pulse.eco/restapi).
 API Reference and User Guide for this package is available on [Read the Docs](https://pulse-eco.readthedocs.io/en/latest/).
 
 ## Requesting data with a larger time range
@@ -59,7 +59,7 @@ If the time range is larger than the maximum, the pulseeco module creates multip
 
 ## Warnings instead of errors
 
-This package does not raise errors for invalid input. Instead it prints warning messages for known bad inputs and makes the API call anyway. So expect an HTTPError.  
+This package does not raise errors for invalid input. Instead it prints warning messages for known bad inputs and makes the API call anyway. So expect an HTTPError.
 This is because the REST API documentation doesn't cover all possible errors for bad arguments. Another reason is because this package is trying to be future proof.
 
 To disable these warnings:

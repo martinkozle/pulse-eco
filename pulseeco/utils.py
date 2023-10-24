@@ -1,5 +1,6 @@
+from __future__ import annotations
+
 from datetime import datetime, timedelta, timezone
-from typing import List, Tuple, Union
 
 
 def convert_datetime_to_str(datetime: datetime) -> str:
@@ -14,9 +15,8 @@ def convert_datetime_to_str(datetime: datetime) -> str:
 
 
 def split_datetime_span(
-        fr: Union[str, datetime],
-        to: Union[str, datetime],
-        td: timedelta) -> List[Tuple[datetime, datetime]]:
+    fr: str | datetime, to: str | datetime, td: timedelta
+) -> list[tuple[datetime, datetime]]:
     """Split a datetime span into a list of (fr, to) datetime pairs
         with a given maximum timedelta
 
