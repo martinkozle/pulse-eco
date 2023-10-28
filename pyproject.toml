@@ -39,12 +39,12 @@ keywords = [
     "air quality index",
     "air pollution",
 ]
-dependencies = ["requests>=2.26.0", "pydantic>=2,<3"]
+dependencies = ["requests>=2.31.0", "pydantic>=2,<3"]
 
 [project.optional-dependencies]
 test = ["coverage[toml]>=7.3", "pytest", "python-dotenv"]
 types = ["types-requests"]
-lint = ["pulse-eco[types]", "black>=23.10.0", "mypy>=1.6.1", "ruff>=0.1.0"]
+lint = ["pulse-eco[types]", "mypy>=1.6.1", "ruff>=0.1.2"]
 dev = [
     "pulse-eco[test,lint]",
     "pre-commit>=3.5.0",
@@ -84,8 +84,6 @@ include = ["pulseeco/**/*.py", "tests/**/*.py", "pyproject.toml"]
 exclude = ["docs"]
 select = [
     "F",
-    "E",
-    "W",
     "I",
     "N",
     "UP",
@@ -120,7 +118,7 @@ select = [
     "LOG",
     "RUF",
 ]
-ignore = ["E501", "ANN101", "PLR0913"]
+ignore = ["E501", "ANN101", "PLR0913", "ISC001"]
 
 [tool.ruff.per-file-ignores]
 "tests/**/*" = ["S101"]
