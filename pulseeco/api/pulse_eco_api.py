@@ -1,19 +1,22 @@
 from __future__ import annotations
 
+import os
 import warnings
 from typing import TYPE_CHECKING, Any, cast
 
 import requests
 
-from .constants import AVG_DATA_MAX_SPAN, DATA_RAW_MAX_SPAN, PULSE_ECO_BASE_URL
+from pulseeco.constants import AVG_DATA_MAX_SPAN, DATA_RAW_MAX_SPAN, PULSE_ECO_BASE_URL
+from pulseeco.utils import convert_datetime_to_str, split_datetime_span
+
+from .base import PulseEcoAPIBase
 from .data_types import DataValueAvg, DataValueRaw, Overall, Sensor
-from .utils import convert_datetime_to_str, split_datetime_span
 
 if TYPE_CHECKING:
     import datetime
 
 
-class PulseEcoAPI:
+class PulseEcoAPI(PulseEcoAPIBase):
     """Low level unsafe pulse.eco API wrapper"""
 
     def __init__(
@@ -34,13 +37,22 @@ class PulseEcoAPI:
             self._session = session
         else:
             self._session = requests.Session()
+
+        if (
+            auth is None
+            and "PULSE_ECO_USERNAME" in os.environ
+            and "PULSE_ECO_PASSWORD" in os.environ
+        ):
+            auth = (
+                os.environ["PULSE_ECO_USERNAME"],
+                os.environ["PULSE_ECO_PASSWORD"],
+            )
         if auth is not None:
             self._session.auth = auth
-        self._base_url = base_url
 
-    def __del__(self) -> None:
-        """Close the session"""
-        self._session.close()
+        if base_url is None and "PULSE_ECO_BASE_URL" in os.environ:
+            base_url = os.environ["PULSE_ECO_BASE_URL"]
+        self._base_url = base_url
 
     def _base_request(
         self, city_name: str, end_point: str, params: dict[str, Any] | None = None

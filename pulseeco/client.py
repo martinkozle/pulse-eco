@@ -11,6 +11,7 @@ if TYPE_CHECKING:
 
     import requests
 
+    from .api.base import PulseEcoAPIBase
     from .enums import AveragePeriod, DataValueType
 
 
@@ -22,6 +23,7 @@ class PulseEcoClient:
         auth: tuple[str, str] | None = None,
         base_url: str = PULSE_ECO_BASE_URL,
         session: requests.Session | None = None,
+        pulse_eco_api: PulseEcoAPIBase | None = None,
     ) -> None:
         """Initialize the pulse.eco client
 
@@ -30,11 +32,16 @@ class PulseEcoClient:
             'https://{city_name}.pulse.eco/rest/{end_point}'
         :param session: a requests session
             , use this to customize the session and add retries, defaults to None
+        :param pulse_eco_api: a pulse.eco API wrapper, defaults to None
+            , if set, the other parameters are ignored
         """
-        self._pulse_eco_api = PulseEcoAPI(auth=auth, base_url=base_url, session=session)
-
-    def __del__(self) -> None:
-        del self._pulse_eco_api
+        self._pulse_eco_api: PulseEcoAPIBase
+        if pulse_eco_api is None:
+            self._pulse_eco_api = PulseEcoAPI(
+                auth=auth, base_url=base_url, session=session
+            )
+        else:
+            self._pulse_eco_api = pulse_eco_api
 
     def sensors(self, city_name: str) -> list[Sensor]:
         """Get all sensors for a city
@@ -80,7 +87,11 @@ class PulseEcoClient:
         return [
             DataValue.model_validate(data_value)
             for data_value in self._pulse_eco_api.data_raw(
-                city_name=city_name, from_=from_, to=to, sensor_id=sensor_id, type=type
+                city_name=city_name,
+                from_=from_,
+                to=to,
+                type=type,
+                sensor_id=sensor_id,
             )
         ]
 
