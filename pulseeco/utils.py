@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
+from typing import Iterator
 
 
 def convert_datetime_to_str(datetime: datetime) -> str:
@@ -16,7 +17,7 @@ def convert_datetime_to_str(datetime: datetime) -> str:
 
 def split_datetime_span(
     fr: str | datetime, to: str | datetime, td: timedelta
-) -> list[tuple[datetime, datetime]]:
+) -> Iterator[tuple[datetime, datetime]]:
     """Split a datetime span into a list of (fr, to) datetime pairs
         with a given maximum timedelta
 
@@ -29,12 +30,10 @@ def split_datetime_span(
         fr = datetime.fromisoformat(fr)
     if isinstance(to, str):
         to = datetime.fromisoformat(to)
-    output = []
     current = fr
     prev = current
     while current + td < to:
         current += td
-        output.append((prev, current))
+        yield prev, current
         prev = current + timedelta(seconds=1)
-    output.append((prev, to))
-    return output
+    yield prev, to
