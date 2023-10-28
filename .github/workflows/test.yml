@@ -44,6 +44,11 @@ jobs:
 
     - name: Run tests
       env:
-        USERNAME: ${{ secrets.USERNAME }}
-        PASSWORD: ${{ secrets.PASSWORD }}
+        PULSE_ECO_USERNAME: ${{ secrets.PULSE_ECO_USERNAME }}
+        PULSE_ECO_PASSWORD: ${{ secrets.PULSE_ECO_PASSWORD }}
       run: hatch run cov
+
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v3
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

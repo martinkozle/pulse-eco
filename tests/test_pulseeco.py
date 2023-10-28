@@ -1,5 +1,4 @@
 import datetime
-import os
 
 import dotenv
 import pytest
@@ -12,11 +11,7 @@ from pulseeco.utils import split_datetime_span
 @pytest.fixture(scope="session")
 def pulse_eco() -> PulseEcoClient:
     dotenv.load_dotenv(override=True)
-    email = os.environ["USERNAME"]
-    password = os.environ["PASSWORD"]
-    assert email, "USERNAME environment variable not set"
-    assert password, "PASSWORD environment variable not set"
-    return PulseEcoClient(auth=(email, password))
+    return PulseEcoClient()
 
 
 def test_sensors(pulse_eco: PulseEcoClient) -> None:
@@ -37,7 +32,7 @@ def test_split_datetime_span() -> None:
     fr = "2019-03-17T12:00:00"
     to = "2019-04-03T14:57:03"
     td = datetime.timedelta(days=7)
-    datetimes = split_datetime_span(fr, to, td)
+    datetimes = list(split_datetime_span(fr, to, td))
     expected_datetimes = [
         (
             datetime.datetime(2019, 3, 17, 12, 0),  # noqa: DTZ001
@@ -63,8 +58,8 @@ def test_data_raw(pulse_eco: PulseEcoClient) -> None:
         city_name="skopje",
         from_=from_,
         to=to,
-        sensor_id="1001",
         type=DataValueType.PM10,
+        sensor_id="1001",
     )
     assert len(data_raw) > 0, "there should be at least one data value"
 
