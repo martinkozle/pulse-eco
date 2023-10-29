@@ -143,4 +143,5 @@ exclude_lines = [
     '^\s*return NotImplemented\b',
     '^\s*raise$',
     '''^if __name__ == ['"]__main__['"]:$''',
+    '^if TYPE_CHECKING:$',
 ]
