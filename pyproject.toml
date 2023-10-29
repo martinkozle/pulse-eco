@@ -57,10 +57,6 @@ dev = [
     "pip-tools>=7.3.0",
     "ipython",
 ]
-pandas = ["pandas>=1.0.0"]
-
-[project.scripts]
-pulseeco = "pulseeco.__main__:main[pandas]"
 
 [project.urls]
 "Bug Tracker" = "https://github.com/martinkozle/pulse-eco/issues"
