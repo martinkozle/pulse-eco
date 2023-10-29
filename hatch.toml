@@ -1,0 +1,26 @@
+[envs.default]
+features = ["test", "lint"]
+[envs.default.scripts]
+test = "pytest {args:tests}"
+test-cov = "coverage run -m pytest {args:tests}"
+cov-report = ["- coverage combine", "coverage report --show-missing"]
+cov = ["test-cov", "cov-report"]
+typing = "mypy ."
+style = ["ruff .", "ruff format --check --diff {args:pulseeco tests}"]
+fmt = [
+    "black {args:pulseeco tests}",
+    "ruff --fix {args:pulseeco tests}",
+    "style",
+]
+lint = ["style", "typing"]
+
+# meant to be used locally
+[envs.dev]
+python = "3.8"
+features = ["dev"]
+[envs.dev.scripts]
+pre-commit-install = "pre-commit install"
+setup = ["pre-commit-install"]
+pre-commit-run = "pre-commit run --all-files"
+check = ["pre-commit-run || true", "typing || true", "cov"]
+docs-serve = "mkdocs serve"

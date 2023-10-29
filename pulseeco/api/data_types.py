@@ -1,4 +1,6 @@
-from typing import Optional, TypedDict
+from __future__ import annotations
+
+from typing import TypedDict
 
 
 class Sensor(TypedDict):
@@ -10,13 +12,19 @@ class Sensor(TypedDict):
     status: str
 
 
-class DataValue(TypedDict):
+class DataValueBase(TypedDict):
     sensorId: str
     stamp: str
-    year: Optional[int]
     type: str
-    position: str
     value: str
+
+
+class DataValueRaw(DataValueBase):
+    position: str
+
+
+class DataValueAvg(DataValueBase):
+    position: None
 
 
 class OverallValues(TypedDict):
