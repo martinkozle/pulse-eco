@@ -11,20 +11,20 @@ from pulseeco.utils import split_datetime_span
 @pytest.fixture(scope="session")
 def pulse_eco() -> PulseEcoClient:
     dotenv.load_dotenv(override=True)
-    return PulseEcoClient()
+    return PulseEcoClient(city_name="skopje")
 
 
 def test_sensors(pulse_eco: PulseEcoClient) -> None:
     """Test sensors endpoint"""
-    pulse_eco.sensors("skopje")
+    pulse_eco.sensors()
 
 
 def test_sensor(pulse_eco: PulseEcoClient) -> None:
     """Test sensor endpont"""
-    sensors = pulse_eco.sensors("skopje")
+    sensors = pulse_eco.sensors()
     assert len(sensors) > 0, "there should be at least one sensor"
     sensor_id = sensors[0].sensor_id
-    sensor = pulse_eco.sensor("skopje", sensor_id)
+    sensor = pulse_eco.sensor(sensor_id)
     assert sensor == sensors[0], "sensor should be the same as the one from sensors"
 
 
@@ -55,7 +55,6 @@ def test_data_raw(pulse_eco: PulseEcoClient) -> None:
     from_ = "2017-03-15T02:00:00+01:00"
     to = "2017-04-19T12:00:00+01:00"
     data_raw = pulse_eco.data_raw(
-        city_name="skopje",
         from_=from_,
         to=to,
         type=DataValueType.PM10,
@@ -70,7 +69,6 @@ def test_avg_data(pulse_eco: PulseEcoClient) -> None:
     to = "2020-05-01T12:00:00+00:00"
     for period in (AveragePeriod.DAY, AveragePeriod.WEEK, AveragePeriod.MONTH):
         avg_data = pulse_eco.avg_data(
-            city_name="skopje",
             period=period,
             from_=from_,
             to=to,
@@ -82,16 +80,16 @@ def test_avg_data(pulse_eco: PulseEcoClient) -> None:
 
 def test_data24h(pulse_eco: PulseEcoClient) -> None:
     """Test data24h endpoint"""
-    data24h = pulse_eco.data24h(city_name="skopje")
+    data24h = pulse_eco.data24h()
     assert len(data24h) > 0, "there should be at least one data value"
 
 
 def test_current(pulse_eco: PulseEcoClient) -> None:
     """Test current endpoint"""
-    current = pulse_eco.current(city_name="skopje")
+    current = pulse_eco.current()
     assert len(current) > 0, "there should be at least one data value"
 
 
 def test_overall(pulse_eco: PulseEcoClient) -> None:
     """Test overall endpoint"""
-    pulse_eco.overall(city_name="skopje")
+    pulse_eco.overall()

@@ -21,18 +21,25 @@ class PulseEcoAPI(PulseEcoAPIBase):
 
     def __init__(
         self,
+        city_name: str,
         auth: tuple[str, str] | None = None,
         base_url: str = PULSE_ECO_BASE_URL,
         session: requests.Session | None = None,
     ) -> None:
         """Initialize the pulse.eco API wrapper
 
+        :param city_name: the city name
         :param auth: a tuple of (email, password), defaults to None
         :param base_url: the base URL of the API, defaults to
             'https://{city_name}.pulse.eco/rest/{end_point}'
         :param session: a requests session
             , use this to customize the session and add retries, defaults to None
         """
+        self.city_name = city_name
+
+        if base_url is None and "PULSE_ECO_BASE_URL" in os.environ:
+            base_url = os.environ["PULSE_ECO_BASE_URL"]
+
         if session is not None:
             self._session = session
         else:
@@ -47,50 +54,45 @@ class PulseEcoAPI(PulseEcoAPIBase):
                 os.environ["PULSE_ECO_USERNAME"],
                 os.environ["PULSE_ECO_PASSWORD"],
             )
+
         if auth is not None:
             self._session.auth = auth
 
-        if base_url is None and "PULSE_ECO_BASE_URL" in os.environ:
-            base_url = os.environ["PULSE_ECO_BASE_URL"]
         self._base_url = base_url
 
     def _base_request(
-        self, city_name: str, end_point: str, params: dict[str, Any] | None = None
+        self, end_point: str, params: dict[str, Any] | None = None
     ) -> Any:  # noqa: ANN401
         """Make a request to the PulseEco API
 
-        :param city_name: the city name
         :param end_point: an end point of the API
         :param params: get parameters, defaults to None
         :return: the response json
         """
         if params is None:
             params = {}
-        url = self._base_url.format(city_name=city_name, end_point=end_point)
+        url = self._base_url.format(city_name=self.city_name, end_point=end_point)
         response = self._session.get(url, params=params)
         response.raise_for_status()
         return response.json()
 
-    def sensors(self, city_name: str) -> list[Sensor]:
+    def sensors(self) -> list[Sensor]:
         """Get all sensors for a city
 
-        :param city_name: the city name
         :return: a list of sensors
         """
-        return cast("list[Sensor]", self._base_request(city_name, "sensor"))
+        return cast("list[Sensor]", self._base_request("sensor"))
 
-    def sensor(self, city_name: str, sensor_id: str) -> Sensor:
+    def sensor(self, sensor_id: str) -> Sensor:
         """Get a sensor by it's ID
 
-        :param city_name: the city name
         :param sensor_id: the unique ID of the sensor
         :return: a sensor
         """
-        return cast(Sensor, self._base_request(city_name, f"sensor/{sensor_id}"))
+        return cast(Sensor, self._base_request(f"sensor/{sensor_id}"))
 
     def data_raw(
         self,
-        city_name: str,
         from_: str | datetime.datetime,
         to: str | datetime.datetime,
         type: str | None = None,
@@ -98,7 +100,6 @@ class PulseEcoAPI(PulseEcoAPIBase):
     ) -> list[DataValueRaw]:
         """Get raw data for a city
 
-        :param city_name: the city name
         :param from_: the start datetime of the data
             as a datetime object or an isoformat string
         :param to: the end datetime of the data
@@ -125,14 +126,13 @@ class PulseEcoAPI(PulseEcoAPIBase):
             params = {k: v for k, v in params.items() if v is not None}
             data_value = cast(
                 "list[DataValueRaw]",
-                self._base_request(city_name, "dataRaw", params=params),
+                self._base_request("dataRaw", params=params),
             )
             data += data_value
         return data
 
     def avg_data(
         self,
-        city_name: str,
         period: str,
         from_: str | datetime.datetime,
         to: str | datetime.datetime,
@@ -141,7 +141,6 @@ class PulseEcoAPI(PulseEcoAPIBase):
     ) -> list[DataValueAvg]:
         """Get average data for a city
 
-        :param city_name: the city name
         :param period: the period of the average data (day, week, month)
         :param from_: the start datetime of the data
             as a datetime object or an isoformat string
@@ -169,32 +168,32 @@ class PulseEcoAPI(PulseEcoAPIBase):
             params = {k: v for k, v in params.items() if v is not None}
             data_value = cast(
                 "list[DataValueAvg]",
-                self._base_request(city_name, f"avgData/{period}", params=params),
+                self._base_request(f"avgData/{period}", params=params),
             )
             data += data_value
         return data
 
-    def data24h(self, city_name: str) -> list[DataValueRaw]:
+    def data24h(self) -> list[DataValueRaw]:
         """Get 24h data for a city
 
         The data values are sorted ascending by their timestamp.
 
-        :param city_name: the city name
         :return: a list of data values for the past 24 hours
         """
-        return cast("list[DataValueRaw]", self._base_request(city_name, "data24h"))
+        return cast("list[DataValueRaw]", self._base_request("data24h"))
 
-    def current(self, city_name: str) -> list[DataValueRaw]:
+    def current(self) -> list[DataValueRaw]:
         """Get the last received valid data for each sensor in a city
 
         Will not return sensor data older than 2 hours.
 
-        :param city_name: the city name
         :return: a list of current data values
         """
-        return cast("list[DataValueRaw]", self._base_request(city_name, "current"))
+        return cast("list[DataValueRaw]", self._base_request("current"))
 
-    def overall(self, city_name: str) -> Overall:
+    def overall(
+        self,
+    ) -> Overall:
         """Get the current average data for all sensors per value for a city
 
         ## Example:
@@ -215,7 +214,6 @@ class PulseEcoAPI(PulseEcoAPIBase):
         }
         ```
 
-        :param city_name: the city name
         :return: the overall data for the city
         """
-        return cast(Overall, self._base_request(city_name, "overall"))
+        return cast(Overall, self._base_request("overall"))
