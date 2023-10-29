@@ -6,7 +6,7 @@ test-cov = "coverage run -m pytest {args:tests}"
 cov-report = ["- coverage combine", "coverage report --show-missing"]
 cov = ["test-cov", "cov-report"]
 typing = "mypy ."
-style = ["ruff .", "black --check --diff {args:pulseeco tests}"]
+style = ["ruff .", "ruff format --check --diff {args:pulseeco tests}"]
 fmt = [
     "black {args:pulseeco tests}",
     "ruff --fix {args:pulseeco tests}",
