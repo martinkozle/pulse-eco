@@ -1,0 +1,26 @@
+site_name: pulse-eco
+docs_dir: mkdocs/
+theme:
+  name: material
+  features:
+    - content.code.copy
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            docstring_style: sphinx
+markdown_extensions:
+  - pymdownx.snippets
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+nav:
+  - index.md
+  - PulseEcoClient.md
+  - PulseEcoAPI.md

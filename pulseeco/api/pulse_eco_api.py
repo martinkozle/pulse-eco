@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
 
 class PulseEcoAPI(PulseEcoAPIBase):
-    """Low level unsafe pulse.eco API wrapper"""
+    """Low level unsafe pulse.eco API wrapper."""
 
     def __init__(
         self,
@@ -26,7 +26,7 @@ class PulseEcoAPI(PulseEcoAPIBase):
         base_url: str = PULSE_ECO_BASE_URL,
         session: requests.Session | None = None,
     ) -> None:
-        """Initialize the pulse.eco API wrapper
+        """Initialize the pulse.eco API wrapper.
 
         :param city_name: the city name
         :param auth: a tuple of (email, password), defaults to None
@@ -63,7 +63,7 @@ class PulseEcoAPI(PulseEcoAPIBase):
     def _base_request(
         self, end_point: str, params: dict[str, Any] | None = None
     ) -> Any:  # noqa: ANN401
-        """Make a request to the PulseEco API
+        """Make a request to the PulseEco API.
 
         :param end_point: an end point of the API
         :param params: get parameters, defaults to None
@@ -77,7 +77,7 @@ class PulseEcoAPI(PulseEcoAPIBase):
         return response.json()
 
     def sensors(self) -> list[Sensor]:
-        """Get all sensors for a city
+        """Get all sensors for a city.
 
         :return: a list of sensors
         """
@@ -98,7 +98,7 @@ class PulseEcoAPI(PulseEcoAPIBase):
         type: str | None = None,
         sensor_id: str | None = None,
     ) -> list[DataValueRaw]:
-        """Get raw data for a city
+        """Get raw data for a city.
 
         :param from_: the start datetime of the data
             as a datetime object or an isoformat string
@@ -139,7 +139,7 @@ class PulseEcoAPI(PulseEcoAPIBase):
         type: str,
         sensor_id: str | None = None,
     ) -> list[DataValueAvg]:
-        """Get average data for a city
+        """Get average data for a city.
 
         :param period: the period of the average data (day, week, month)
         :param from_: the start datetime of the data
@@ -174,7 +174,7 @@ class PulseEcoAPI(PulseEcoAPIBase):
         return data
 
     def data24h(self) -> list[DataValueRaw]:
-        """Get 24h data for a city
+        """Get 24h data for a city.
 
         The data values are sorted ascending by their timestamp.
 
@@ -194,7 +194,7 @@ class PulseEcoAPI(PulseEcoAPIBase):
     def overall(
         self,
     ) -> Overall:
-        """Get the current average data for all sensors per value for a city
+        """Get the current average data for all sensors per value for a city.
 
         ## Example:
 

@@ -45,8 +45,14 @@ dependencies = ["requests>=2.31.0", "pydantic>=2,<3"]
 test = ["coverage[toml]>=7.3", "pytest", "python-dotenv"]
 types = ["types-requests"]
 lint = ["pulse-eco[types]", "mypy>=1.6.1", "ruff>=0.1.2"]
+docs = [
+    "mkdocs",
+    "mkdocstrings[python]",
+    "pymdown-extensions",
+    "mkdocs-material",
+]
 dev = [
-    "pulse-eco[test,lint]",
+    "pulse-eco[test,lint,docs]",
     "pre-commit>=3.5.0",
     "pip-tools>=7.3.0",
     "ipython",

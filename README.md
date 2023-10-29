@@ -23,13 +23,13 @@ pulse.eco client for Python.
 ```python
 from pulseeco import PulseEcoClient
 
-pulse_eco = PulseEcoClient(auth=("user", "pass"))
+pulse_eco = PulseEcoClient(city_name="skopje", auth=("user", "pass"))
 ```
 
 ### Get all sensors
 
-```python
->>> pulse_eco.sensors(city_name="skopje")
+```pycon
+>>> pulse_eco.sensors()
 [
   Sensor(
     sensor_id='sensor_dev_60237_141',
@@ -61,8 +61,8 @@ pulse_eco = PulseEcoClient(auth=("user", "pass"))
 
 ### Get a sensor by id
 
-```python
->>> pulse_eco.sensor(city_name="skopje", sensor_id="1000")
+```pycon
+>>> pulse_eco.sensor(sensor_id="1000")
 Sensor(
   sensor_id='1000',
   position='41.99249998,21.4236110',
@@ -73,15 +73,14 @@ Sensor(
 )
 ```
 
-### Get raw data for a city
+### Get raw data
 
 `from_` and `to` can be either `datetime.datetime` objects or `str` in ISO 8601 format.
 
-```python
+```pycon
 >>> import datetime
 >>> from pulseeco import DataValueType
 >>> pulse_eco.data_raw(
-  city_name="skopje",
   from_=datetime.datetime(year=2017, month=3, day=15, hour=2),
   to=datetime.datetime(year=2017, month=4, day=19, hour=12),
   type=DataValueType.PM10,
@@ -96,15 +95,14 @@ Sensor(
 ]
 ```
 
-### Get average data for a city
+### Get average data
 
 sensor_id `"-1"` is a magic value that gives average values for the whole city.
 
-```python
+```pycon
 >>> import datetime
 >>> from pulseeco import AveragePeriod, DataValueType
 >>> pulse_eco.avg_data(
-  city_name="skopje",
   period=AveragePeriod.MONTH,
   from_=datetime.datetime(year=2019, month=3, day=1, hour=12),
   to=datetime.datetime(year=2020, month=5, day=1, hour=12),
@@ -120,28 +118,28 @@ sensor_id `"-1"` is a magic value that gives average values for the whole city.
 ]
 ```
 
-### Get 24h data for a city
+### Get 24h data
 
-```python
->>> pulse_eco.data24h(city_name="skopje")
+```pycon
+>>> pulse_eco.data24h()
 [ ... ]
 ```
 
-### Get current data for a city
+### Get current data
 
 Get the last received valid data for each sensor in a city.
 
-```python
->>> pulse_eco.current(city_name="skopje")
+```pycon
+>>> pulse_eco.current()
 [ ... ]
 ```
 
-### Get overall data for a city
+### Get overall data
 
 Get the current average data for all sensors per value for a city.
 
-```python
->>> pulse_eco.overall(city_name="skopje")
+```pycon
+>>> pulse_eco.overall()
 Overall(
   city_name='skopje',
   values=OverallValues(
@@ -194,7 +192,7 @@ Activate a Python 3.8 environment and run:
 hatch env create dev
 ```
 
-### Run setup to install pre-commit hooks
+### Install pre-commit hooks
 
 ```console
 hatch run dev:setup
@@ -215,3 +213,15 @@ This command must pass without errors before committing:
 ```console
 hatch run dev:check
 ```
+
+### Docs
+
+To preview the docs locally, run:
+
+```console
+hatch run dev:docs-serve
+```
+
+## Contributing
+
+Contributions, especially to the documentation, are welcome.

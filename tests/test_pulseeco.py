@@ -15,12 +15,10 @@ def pulse_eco() -> PulseEcoClient:
 
 
 def test_sensors(pulse_eco: PulseEcoClient) -> None:
-    """Test sensors endpoint"""
     pulse_eco.sensors()
 
 
 def test_sensor(pulse_eco: PulseEcoClient) -> None:
-    """Test sensor endpont"""
     sensors = pulse_eco.sensors()
     assert len(sensors) > 0, "there should be at least one sensor"
     sensor_id = sensors[0].sensor_id
@@ -51,7 +49,6 @@ def test_split_datetime_span() -> None:
 
 
 def test_data_raw(pulse_eco: PulseEcoClient) -> None:
-    """Test dataRaw endpoint"""
     from_ = "2017-03-15T02:00:00+01:00"
     to = "2017-04-19T12:00:00+01:00"
     data_raw = pulse_eco.data_raw(
@@ -64,7 +61,6 @@ def test_data_raw(pulse_eco: PulseEcoClient) -> None:
 
 
 def test_avg_data(pulse_eco: PulseEcoClient) -> None:
-    """Test average endpoint"""
     from_ = "2019-03-01T12:00:00+00:00"
     to = "2020-05-01T12:00:00+00:00"
     for period in (AveragePeriod.DAY, AveragePeriod.WEEK, AveragePeriod.MONTH):
@@ -79,17 +75,14 @@ def test_avg_data(pulse_eco: PulseEcoClient) -> None:
 
 
 def test_data24h(pulse_eco: PulseEcoClient) -> None:
-    """Test data24h endpoint"""
     data24h = pulse_eco.data24h()
     assert len(data24h) > 0, "there should be at least one data value"
 
 
 def test_current(pulse_eco: PulseEcoClient) -> None:
-    """Test current endpoint"""
     current = pulse_eco.current()
     assert len(current) > 0, "there should be at least one data value"
 
 
 def test_overall(pulse_eco: PulseEcoClient) -> None:
-    """Test overall endpoint"""
     pulse_eco.overall()

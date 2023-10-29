@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
 
 class PulseEcoClient:
-    """High level pulse.eco client"""
+    """High level pulse.eco client."""
 
     def __init__(
         self,
@@ -26,7 +26,7 @@ class PulseEcoClient:
         session: requests.Session | None = None,
         pulse_eco_api: PulseEcoAPIBase | None = None,
     ) -> None:
-        """Initialize the pulse.eco client
+        """Initialize the pulse.eco client.
 
         :param city_name: the city name
         :param auth: a tuple of (email, password), defaults to None
@@ -46,7 +46,7 @@ class PulseEcoClient:
             self._pulse_eco_api = pulse_eco_api
 
     def sensors(self) -> list[Sensor]:
-        """Get all sensors for a city
+        """Get all sensors for a city.
 
         :return: a list of sensors
         """
@@ -55,7 +55,7 @@ class PulseEcoClient:
         ]
 
     def sensor(self, sensor_id: str) -> Sensor:
-        """Get a sensor by it's ID
+        """Get a sensor by it's ID.
 
         :param sensor_id: the unique ID of the sensor
         :return: a sensor
@@ -69,7 +69,7 @@ class PulseEcoClient:
         type: DataValueType | None = None,
         sensor_id: str | None = None,
     ) -> list[DataValue]:
-        """Get raw data for a city
+        """Get raw data for a city.
 
         :param from_: the start datetime of the data
             as a datetime object or an isoformat string
@@ -97,7 +97,7 @@ class PulseEcoClient:
         type: DataValueType,
         sensor_id: str | None = None,
     ) -> list[DataValue]:
-        """Get average data for a city
+        """Get average data for a city.
 
         :param period: the period of the average data
         :param from_: the start datetime of the data
@@ -120,7 +120,7 @@ class PulseEcoClient:
         ]
 
     def data24h(self) -> list[DataValue]:
-        """Get 24h data for a city
+        """Get 24h data for a city.
 
         The data values are sorted ascending by their timestamp.
 
@@ -132,7 +132,7 @@ class PulseEcoClient:
         ]
 
     def current(self) -> list[DataValue]:
-        """Get the last received valid data for each sensor in a city
+        """Get the last received valid data for each sensor in a city.
 
         Will not return sensor data older than 2 hours.
 
@@ -144,7 +144,7 @@ class PulseEcoClient:
         ]
 
     def overall(self) -> Overall:
-        """Get the current average data for all sensors per value for a city
+        """Get the current average data for all sensors per value for a city.
 
         :return: the overall data for the city
         """
