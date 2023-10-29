@@ -82,7 +82,3 @@ To preview the docs locally, run:
 ```console
 hatch run dev:docs-serve
 ```
-
-## Contributing
-
-Contributions, especially to the documentation, are welcome.
