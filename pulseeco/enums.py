@@ -58,6 +58,7 @@ class DataValueType(StrEnum):
     HUMIDITY = "humidity"
     PRESSURE = "pressure"
     NOISE_DBA = "noise_dba"
+    NOISE = "noise"
 
 
 class AveragePeriod(StrEnum):
