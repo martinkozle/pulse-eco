@@ -36,6 +36,8 @@ class OverallValues(TypedDict):
     humidity: str
     pressure: str
     noise_dba: str
+    noise: int
+    gasResistance: int
 
 
 class Overall(TypedDict):

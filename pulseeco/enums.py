@@ -59,7 +59,7 @@ class DataValueType(StrEnum):
     PRESSURE = "pressure"
     NOISE_DBA = "noise_dba"
     NOISE = "noise"
-
+    GAS_RESISTANCE = "gasResistance"
 
 class AveragePeriod(StrEnum):
     DAY = "day"
