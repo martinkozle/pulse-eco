@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 import datetime  # noqa: TCH003
-from typing import Optional
+from typing import Any, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, BeforeValidator, Field
+from typing_extensions import Annotated
 
 from .enums import DataValueType, SensorStatus, SensorType  # noqa: TCH001
 
@@ -36,15 +37,25 @@ class DataValue(BaseModel):
     )
 
 
+def validate_na(v: Any) -> Any | None:  # noqa: ANN401
+    """Validate `N/A` value."""
+    if v == "N/A":
+        return None
+    return v
+
+
+OverallValue = Annotated[Optional[int], BeforeValidator(validate_na)]
+
+
 class OverallValues(BaseModel):
-    no2: int
-    o3: int
-    pm25: int
-    pm10: int
-    temperature: int
-    humidity: int
-    pressure: int
-    noise_dba: int
+    no2: OverallValue
+    o3: OverallValue
+    pm25: OverallValue
+    pm10: OverallValue
+    temperature: OverallValue
+    humidity: OverallValue
+    pressure: OverallValue
+    noise_dba: OverallValue
 
 
 class Overall(BaseModel):
