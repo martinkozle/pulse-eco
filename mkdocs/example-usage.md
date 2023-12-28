@@ -2,6 +2,8 @@
 
 ## Initialize client
 
+Authentication is not required for fetching data. But if provided, it has to be valid. Authentication is per city.
+
 ```python
 from pulseeco import PulseEcoClient
 

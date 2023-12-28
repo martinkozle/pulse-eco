@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from .api import PulseEcoAPI
-from .constants import PULSE_ECO_BASE_URL
+from .constants import PULSE_ECO_BASE_URL_FORMAT
 from .models import DataValue, Overall, Sensor
 
 if TYPE_CHECKING:
@@ -22,7 +22,7 @@ class PulseEcoClient:
         self,
         city_name: str,
         auth: tuple[str, str] | None = None,
-        base_url: str = PULSE_ECO_BASE_URL,
+        base_url: str = PULSE_ECO_BASE_URL_FORMAT,
         session: requests.Session | None = None,
         pulse_eco_api: PulseEcoAPIBase | None = None,
     ) -> None:

@@ -1,5 +1,11 @@
 import datetime
 
-PULSE_ECO_BASE_URL = "https://{city_name}.pulse.eco/rest/{end_point}"
+PULSE_ECO_BASE_URL_FORMAT_ENV_KEY = "PULSE_ECO_BASE_URL_FORMAT"
+PULSE_ECO_USERNAME_ENV_KEY = "PULSE_ECO_USERNAME"
+PULSE_ECO_PASSWORD_ENV_KEY = "PULSE_ECO_PASSWORD"  # noqa: S105
+PULSE_ECO_CITY_USERNAME_ENV_KEY_FORMAT = "PULSE_ECO_{city_name}_USERNAME"
+PULSE_ECO_CITY_PASSWORD_ENV_KEY_FORMAT = "PULSE_ECO_{city_name}_PASSWORD"  # noqa: S105
+
+PULSE_ECO_BASE_URL_FORMAT = "https://{city_name}.pulse.eco/rest/{end_point}"
 DATA_RAW_MAX_SPAN = datetime.timedelta(days=7)
 AVG_DATA_MAX_SPAN = datetime.timedelta(days=365)
