@@ -7,7 +7,7 @@ if sys.version_info < (3, 11):
         def __repr__(self) -> str:
             return str.__repr__(self.value)
 
-else:
+else:  # pragma: no cover
     from enum import StrEnum
 
 

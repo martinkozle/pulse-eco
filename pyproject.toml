@@ -141,4 +141,5 @@ exclude_lines = [
     '^\s*raise$',
     '''^if __name__ == ['"]__main__['"]:$''',
     '^if TYPE_CHECKING:$',
+    '^if sys.version_info ?<.*$'
 ]
