@@ -51,11 +51,17 @@ class OverallValues(BaseModel):
     model_config = ConfigDict(extra="allow")
 
     no2: OverallValue = None
+    no2_ppb: OverallValue = None
     o3: OverallValue = None
     so2: OverallValue = None
     co: OverallValue = None
+    co_ppb: OverallValue = None
+    nh3: OverallValue = None
+    nh3_ppm: OverallValue = None
+    nh3_ppb: OverallValue = None
     pm25: OverallValue = None
     pm10: OverallValue = None
+    pm1: OverallValue = None
     temperature: OverallValue = None
     humidity: OverallValue = None
     pressure: OverallValue = None

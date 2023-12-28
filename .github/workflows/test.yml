@@ -45,9 +45,6 @@ jobs:
         run: hatch run lint
 
       - name: Run tests
-        env:
-          PULSE_ECO_USERNAME: ${{ secrets.PULSE_ECO_USERNAME }}
-          PULSE_ECO_PASSWORD: ${{ secrets.PULSE_ECO_PASSWORD }}
         run: hatch run cov
 
       - name: Upload coverage reports to Codecov

@@ -6,7 +6,16 @@ from typing import TYPE_CHECKING, Any, cast
 
 import requests
 
-from pulseeco.constants import AVG_DATA_MAX_SPAN, DATA_RAW_MAX_SPAN, PULSE_ECO_BASE_URL
+from pulseeco.constants import (
+    AVG_DATA_MAX_SPAN,
+    DATA_RAW_MAX_SPAN,
+    PULSE_ECO_BASE_URL_FORMAT,
+    PULSE_ECO_BASE_URL_FORMAT_ENV_KEY,
+    PULSE_ECO_CITY_PASSWORD_ENV_KEY_FORMAT,
+    PULSE_ECO_CITY_USERNAME_ENV_KEY_FORMAT,
+    PULSE_ECO_PASSWORD_ENV_KEY,
+    PULSE_ECO_USERNAME_ENV_KEY,
+)
 from pulseeco.utils import convert_datetime_to_str, split_datetime_span
 
 from .base import PulseEcoAPIBase
@@ -16,6 +25,47 @@ if TYPE_CHECKING:
     import datetime
 
 
+def get_auth_from_env(city_name: str) -> tuple[str, str] | None:
+    """Get the auth tuple from the environment variables.
+
+    :param city_name: the city name
+    :return: a tuple of (email, password) or None
+    """
+    city_upper_username_env_key = PULSE_ECO_CITY_USERNAME_ENV_KEY_FORMAT.format(
+        city_name=city_name.upper()
+    )
+    city_upper_password_env_key = PULSE_ECO_CITY_PASSWORD_ENV_KEY_FORMAT.format(
+        city_name=city_name.upper()
+    )
+
+    city_username_env_key = PULSE_ECO_CITY_USERNAME_ENV_KEY_FORMAT.format(
+        city_name=city_name
+    )
+    city_password_env_key = PULSE_ECO_CITY_PASSWORD_ENV_KEY_FORMAT.format(
+        city_name=city_name
+    )
+
+    for username_env_key in (
+        city_upper_username_env_key,
+        city_username_env_key,
+        PULSE_ECO_USERNAME_ENV_KEY,
+    ):
+        if username_env_key in os.environ:
+            username = os.environ[username_env_key]
+            break
+    else:
+        return None
+
+    for password_env_key in (
+        city_upper_password_env_key,
+        city_password_env_key,
+        PULSE_ECO_PASSWORD_ENV_KEY,
+    ):
+        if password_env_key in os.environ:
+            return username, os.environ[password_env_key]
+    return None
+
+
 class PulseEcoAPI(PulseEcoAPIBase):
     """Low level unsafe pulse.eco API wrapper."""
 
@@ -23,7 +73,7 @@ class PulseEcoAPI(PulseEcoAPIBase):
         self,
         city_name: str,
         auth: tuple[str, str] | None = None,
-        base_url: str = PULSE_ECO_BASE_URL,
+        base_url: str = PULSE_ECO_BASE_URL_FORMAT,
         session: requests.Session | None = None,
     ) -> None:
         """Initialize the pulse.eco API wrapper.
@@ -37,23 +87,16 @@ class PulseEcoAPI(PulseEcoAPIBase):
         """
         self.city_name = city_name
 
-        if base_url is None and "PULSE_ECO_BASE_URL" in os.environ:
-            base_url = os.environ["PULSE_ECO_BASE_URL"]
+        if base_url is not None and PULSE_ECO_BASE_URL_FORMAT_ENV_KEY in os.environ:
+            base_url = os.environ[PULSE_ECO_BASE_URL_FORMAT_ENV_KEY]
 
         if session is not None:
             self._session = session
         else:
             self._session = requests.Session()
 
-        if (
-            auth is None
-            and "PULSE_ECO_USERNAME" in os.environ
-            and "PULSE_ECO_PASSWORD" in os.environ
-        ):
-            auth = (
-                os.environ["PULSE_ECO_USERNAME"],
-                os.environ["PULSE_ECO_PASSWORD"],
-            )
+        if auth is None:
+            auth = get_auth_from_env(city_name=city_name)
 
         if auth is not None:
             self._session.auth = auth
