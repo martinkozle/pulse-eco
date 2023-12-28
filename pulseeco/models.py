@@ -48,14 +48,18 @@ OverallValue = Annotated[Optional[int], BeforeValidator(validate_na)]
 
 
 class OverallValues(BaseModel):
-    no2: OverallValue
-    o3: OverallValue
-    pm25: OverallValue
-    pm10: OverallValue
-    temperature: OverallValue
-    humidity: OverallValue
-    pressure: OverallValue
-    noise_dba: OverallValue
+    no2: OverallValue = None
+    o3: OverallValue = None
+    so2: OverallValue = None
+    co: OverallValue = None
+    pm25: OverallValue = None
+    pm10: OverallValue = None
+    temperature: OverallValue = None
+    humidity: OverallValue = None
+    pressure: OverallValue = None
+    noise: OverallValue = None
+    noise_dba: OverallValue = None
+    gas_resistance: OverallValue = Field(None, alias="gasResistance")
 
 
 class Overall(BaseModel):

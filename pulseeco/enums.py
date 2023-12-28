@@ -52,11 +52,14 @@ class SensorStatus(StrEnum):
 class DataValueType(StrEnum):
     NO2 = "no2"
     O3 = "o3"
+    SO2 = "so2"
+    CO = "co"
     PM25 = "pm25"
     PM10 = "pm10"
     TEMPERATURE = "temperature"
     HUMIDITY = "humidity"
     PRESSURE = "pressure"
+    NOISE = "noise"
     NOISE_DBA = "noise_dba"
     GAS_RESISTANCE = "gasResistance"
 
