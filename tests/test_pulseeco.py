@@ -1,10 +1,14 @@
+from __future__ import annotations
+
 import datetime
 
 import dotenv
 import pytest
 
 from pulseeco import AveragePeriod, PulseEcoClient
+from pulseeco.constants import DATA_RAW_MAX_SPAN
 from pulseeco.enums import DataValueType
+from pulseeco.models import Sensor
 from pulseeco.utils import split_datetime_span
 
 
@@ -14,12 +18,26 @@ def pulse_eco() -> PulseEcoClient:
     return PulseEcoClient(city_name="skopje")
 
 
+@pytest.fixture(scope="session")
+def sensors(pulse_eco: PulseEcoClient) -> list[Sensor]:
+    return pulse_eco.sensors()
+
+
+@pytest.fixture(scope="session")
+def now() -> datetime.datetime:
+    return datetime.datetime.now(tz=datetime.timezone.utc)
+
+
+@pytest.fixture(scope="session")
+def data_raw_max_span_ago(now: datetime.datetime) -> datetime.datetime:
+    return now - DATA_RAW_MAX_SPAN
+
+
 def test_sensors(pulse_eco: PulseEcoClient) -> None:
     pulse_eco.sensors()
 
 
-def test_sensor(pulse_eco: PulseEcoClient) -> None:
-    sensors = pulse_eco.sensors()
+def test_sensor(pulse_eco: PulseEcoClient, sensors: list[Sensor]) -> None:
     assert len(sensors) > 0, "there should be at least one sensor"
     sensor_id = sensors[0].sensor_id
     sensor = pulse_eco.sensor(sensor_id)
@@ -58,6 +76,20 @@ def test_data_raw(pulse_eco: PulseEcoClient) -> None:
         sensor_id="1001",
     )
     assert len(data_raw) > 0, "there should be at least one data value"
+
+
+def test_data_raw_past_span(
+    pulse_eco: PulseEcoClient,
+    sensors: list[Sensor],
+    data_raw_max_span_ago: datetime.datetime,
+    now: datetime.datetime,
+) -> None:
+    for sensor in sensors:
+        pulse_eco.data_raw(
+            from_=data_raw_max_span_ago,
+            to=now,
+            sensor_id=sensor.sensor_id,
+        )
 
 
 def test_avg_data(pulse_eco: PulseEcoClient) -> None:
