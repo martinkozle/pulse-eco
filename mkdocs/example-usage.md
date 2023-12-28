@@ -125,14 +125,18 @@ Get the current average data for all sensors per value for a city.
 Overall(
   city_name='skopje',
   values=OverallValues(
-    no2=5,
-    o3=12,
-    pm25=19,
-    pm10=44,
-    temperature=17,
-    humidity=85,
-    pressure=974,
-    noise_dba=44
+    no2=6,
+    o3=10,
+    so2=None,
+    co=None,
+    pm25=56,
+    pm10=95,
+    temperature=6,
+    humidity=73,
+    pressure=995,
+    noise=None,
+    noise_dba=42,
+    gas_resistance=None
   )
 )
 ```
