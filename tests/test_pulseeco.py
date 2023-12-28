@@ -117,4 +117,8 @@ def test_current(pulse_eco: PulseEcoClient) -> None:
 
 
 def test_overall(pulse_eco: PulseEcoClient) -> None:
-    pulse_eco.overall()
+    overall = pulse_eco.overall()
+    model_extra = overall.values.model_extra
+    assert (
+        model_extra is None or len(model_extra) == 0
+    ), "there shouldn't be any extra values"

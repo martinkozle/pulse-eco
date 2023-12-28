@@ -3,7 +3,7 @@ from __future__ import annotations
 import datetime  # noqa: TCH003
 from typing import Any, Optional
 
-from pydantic import BaseModel, BeforeValidator, Field
+from pydantic import BaseModel, BeforeValidator, ConfigDict, Field
 from typing_extensions import Annotated
 
 from .enums import DataValueType, SensorStatus, SensorType  # noqa: TCH001
@@ -48,6 +48,8 @@ OverallValue = Annotated[Optional[int], BeforeValidator(validate_na)]
 
 
 class OverallValues(BaseModel):
+    model_config = ConfigDict(extra="allow")
+
     no2: OverallValue = None
     o3: OverallValue = None
     so2: OverallValue = None
