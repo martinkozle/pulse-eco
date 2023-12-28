@@ -8,7 +8,7 @@ import pytest
 from pulseeco import AveragePeriod, PulseEcoClient
 from pulseeco.constants import DATA_RAW_MAX_SPAN
 from pulseeco.enums import DataValueType
-from pulseeco.models import Sensor
+from pulseeco.models import OverallValues, Sensor
 from pulseeco.utils import split_datetime_span
 
 
@@ -114,6 +114,10 @@ def test_data24h(pulse_eco: PulseEcoClient) -> None:
 def test_current(pulse_eco: PulseEcoClient) -> None:
     current = pulse_eco.current()
     assert len(current) > 0, "there should be at least one data value"
+
+
+def test_overall_values_type() -> None:
+    assert OverallValues(pm10="N/A").pm10 is None, "`N/A` should validate to None"
 
 
 def test_overall(pulse_eco: PulseEcoClient) -> None:
