@@ -12,6 +12,8 @@ else:  # pragma: no cover
 
 
 class SensorType(StrEnum):
+    # unknown type
+    TYPE_NEG_1 = "-1"
     # MOEPP measurement station
     TYPE_0 = "0"
     # SkopjePulse LoRaWAN based sensor, version 1
@@ -30,6 +32,10 @@ class SensorType(StrEnum):
     TYPE_20003 = "20003"
     # sensor.community crowdsourced device
     TYPE_20004 = "20004"
+    # unknown type
+    TYPE_20005 = "20005"
+    # unknown type
+    TYPE_20006 = "20006"
 
 
 class SensorStatus(StrEnum):
@@ -51,11 +57,17 @@ class SensorStatus(StrEnum):
 
 class DataValueType(StrEnum):
     NO2 = "no2"
+    NO2_PPB = "no2_ppb"
     O3 = "o3"
     SO2 = "so2"
     CO = "co"
+    CO_PPB = "co_ppb"
+    NH3 = "nh3"
+    NH3_PPM = "nh3_ppm"
+    NH3_PPB = "nh3_ppb"
     PM25 = "pm25"
     PM10 = "pm10"
+    PM1 = "pm1"
     TEMPERATURE = "temperature"
     HUMIDITY = "humidity"
     PRESSURE = "pressure"
