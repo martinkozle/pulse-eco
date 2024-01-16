@@ -69,7 +69,7 @@ source = "vcs"
 version-file = "pulseeco/_version.py"
 
 [tool.hatch.build.targets.sdist]
-include = ["/pulseeco"]
+include = ["/pulseeco", "/pulseeco/py.typed"]
 
 [tool.mypy]
 python_version = "3.8"
