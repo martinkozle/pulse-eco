@@ -7,11 +7,10 @@ cov-report = ["- coverage combine", "coverage report --show-missing"]
 cov-xml = "coverage xml"
 cov = ["test-cov", "cov-report", "cov-xml"]
 typing = "mypy ."
-style = ["ruff .", "ruff format --check --diff {args:pulseeco tests}"]
+style = ["ruff check .", "ruff format --check --diff {args:pulseeco tests}"]
 fmt = [
-    "black {args:pulseeco tests}",
-    "ruff --fix {args:pulseeco tests}",
-    "style",
+    "ruff check --fix {args:pulseeco tests}",
+    "ruff format {args:pulseeco tests}",
 ]
 lint = ["style", "typing"]
 
