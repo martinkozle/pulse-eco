@@ -2,16 +2,17 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from .api import PulseEcoAPI
-from .constants import PULSE_ECO_BASE_URL_FORMAT
-from .models import DataValue, Overall, Sensor
+from pulseeco.api import PulseEcoAPI
+from pulseeco.constants import PULSE_ECO_BASE_URL_FORMAT
+
+from .models import DataValue, DataValues, Overall, Sensor, Sensors
 
 if TYPE_CHECKING:
     import datetime
 
-    import requests
+    from pulseeco.api.base import PulseEcoAPIBase
+    from pulseeco.api.http_clients import ASYNC_CLIENT, CLIENT
 
-    from .api.base import PulseEcoAPIBase
     from .enums import AveragePeriod, DataValueType
 
 
@@ -23,7 +24,9 @@ class PulseEcoClient:
         city_name: str,
         auth: tuple[str, str] | None = None,
         base_url: str = PULSE_ECO_BASE_URL_FORMAT,
-        session: requests.Session | None = None,
+        session: None = None,
+        client: CLIENT | None = None,
+        async_client: ASYNC_CLIENT | None = None,
         pulse_eco_api: PulseEcoAPIBase | None = None,
     ) -> None:
         """Initialize the pulse.eco client.
@@ -32,15 +35,26 @@ class PulseEcoClient:
         :param auth: a tuple of (email, password), defaults to None
         :param base_url: the base URL of the API, defaults to
             'https://{city_name}.pulse.eco/rest/{end_point}'
-        :param session: a requests session
-            use this to customize the session and add retries, defaults to None,
+        :param session: deprecated, use client and async_client instead
+        :param client: a sync http client, supported types are:
+            requests.Session, httpx.Client,
+            defaults to None which uses a new requests.Session for each request,
+            use a context managed session for better performance and resource management
+        :param async_client: an async http client, supported types are:
+            aiohttp.ClientSession, httpx.AsyncClient,
+            defaults to None which will use the sync client
         :param pulse_eco_api: a pulse.eco API wrapper, defaults to None,
             if set, the other parameters are ignored
         """
         self._pulse_eco_api: PulseEcoAPIBase
         if pulse_eco_api is None:
             self._pulse_eco_api = PulseEcoAPI(
-                city_name=city_name, auth=auth, base_url=base_url, session=session
+                city_name=city_name,
+                auth=auth,
+                base_url=base_url,
+                session=session,
+                client=client,
+                async_client=async_client,
             )
         else:
             self._pulse_eco_api = pulse_eco_api
@@ -50,9 +64,7 @@ class PulseEcoClient:
 
         :return: a list of sensors
         """
-        return [
-            Sensor.model_validate(sensor) for sensor in self._pulse_eco_api.sensors()
-        ]
+        return Sensors.validate_python(self._pulse_eco_api.sensors())
 
     def sensor(self, sensor_id: str) -> Sensor:
         """Get a sensor by it's ID.
@@ -79,15 +91,14 @@ class PulseEcoClient:
         :param sensor_id: the unique ID of the sensor, defaults to None
         :return: a list of data values
         """
-        return [
-            DataValue.model_validate(data_value)
-            for data_value in self._pulse_eco_api.data_raw(
+        return DataValues.validate_python(
+            self._pulse_eco_api.data_raw(
                 from_=from_,
                 to=to,
                 type=type,
                 sensor_id=sensor_id,
             )
-        ]
+        )
 
     def avg_data(
         self,
@@ -108,16 +119,15 @@ class PulseEcoClient:
         :param sensor_id: the unique ID of the sensor, defaults to None
         :return: a list of average data values
         """
-        return [
-            DataValue.model_validate(data_value)
-            for data_value in self._pulse_eco_api.avg_data(
+        return DataValues.validate_python(
+            self._pulse_eco_api.avg_data(
                 period=period,
                 from_=from_,
                 to=to,
                 type=type,
                 sensor_id=sensor_id,
             )
-        ]
+        )
 
     def data24h(self) -> list[DataValue]:
         """Get 24h data for a city.
@@ -126,10 +136,7 @@ class PulseEcoClient:
 
         :return: a list of data values for the past 24 hours
         """
-        return [
-            DataValue.model_validate(data_value)
-            for data_value in self._pulse_eco_api.data24h()
-        ]
+        return DataValues.validate_python(self._pulse_eco_api.data24h())
 
     def current(self) -> list[DataValue]:
         """Get the last received valid data for each sensor in a city.
@@ -138,10 +145,7 @@ class PulseEcoClient:
 
         :return: a list of current data values
         """
-        return [
-            DataValue.model_validate(data_value)
-            for data_value in self._pulse_eco_api.current()
-        ]
+        return DataValues.validate_python(self._pulse_eco_api.current())
 
     def overall(self) -> Overall:
         """Get the current average data for all sensors per value for a city.

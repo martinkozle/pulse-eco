@@ -3,9 +3,8 @@ from __future__ import annotations
 import datetime
 
 import pytest
-import requests
 
-from pulseeco import AveragePeriod, PulseEcoClient
+from pulseeco import AveragePeriod, DataValueType, OverallValues, PulseEcoClient, Sensor
 from pulseeco.api.pulse_eco_api import PulseEcoAPI
 from pulseeco.constants import (
     DATA_RAW_MAX_SPAN,
@@ -13,8 +12,6 @@ from pulseeco.constants import (
     PULSE_ECO_PASSWORD_ENV_KEY,
     PULSE_ECO_USERNAME_ENV_KEY,
 )
-from pulseeco.enums import DataValueType
-from pulseeco.models import OverallValues, Sensor
 from pulseeco.utils import split_datetime_span
 
 
@@ -100,27 +97,10 @@ def test_env_vars(monkeypatch: pytest.MonkeyPatch) -> None:
     assert (
         pulse_eco_api._base_url == custom_pulse_eco_base_url_format  # noqa: SLF001
     ), "`_base_url` should be the same as the one from env vars"
-    assert pulse_eco_api._session.auth == (  # noqa: SLF001
+    assert pulse_eco_api._auth == (  # noqa: SLF001
         custom_pulse_eco_username,
         custom_pulse_eco_password,
-    ), "`_session.auth` should be the same as the credentials from env vars"
-
-
-def test_auth() -> None:
-    pulse_eco_api = PulseEcoAPI(city_name="skopje", auth=("username", "password"))
-    assert pulse_eco_api._session.auth == (  # noqa: SLF001
-        "username",
-        "password",
-    ), "`_session.auth` should be the same as the passed credentials"
-
-
-def test_custom_session() -> None:
-    with requests.Session() as session:
-        session.proxies["protocol"] = "proxy"
-        pulse_eco_api = PulseEcoAPI(city_name="skopje", session=session)
-        assert (
-            pulse_eco_api._session.proxies["protocol"] == "proxy"  # noqa: SLF001
-        ), "`_session` should be the same as the one from the session parameter"
+    ), "`_auth` should be the same as the credentials from env vars"
 
 
 def test_custom_pulse_eco_api() -> None:

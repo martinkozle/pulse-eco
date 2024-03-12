@@ -39,12 +39,22 @@ keywords = [
     "air quality index",
     "air pollution",
 ]
-dependencies = ["requests>=2.31.0", "pydantic>=2,<3"]
+dependencies = []
 
 [project.optional-dependencies]
-test = ["coverage[toml]~=7.3.4", "pytest~=7.4.3", "python-dotenv~=1.0.0"]
+client = ["pydantic>=2,<3"]
+requests = ["requests>=2.31.0"]
+aiohttp = ["aiohttp>=3.9.0"]
+httpx = ["httpx>=0.25.1"]
+all-http = ["pulse-eco[requests,aiohttp,httpx]"]
+test = [
+    "pulse-eco[client,all-http]",
+    "coverage[toml]~=7.3.4",
+    "pytest~=7.4.3",
+    "python-dotenv~=1.0.0",
+]
 types = ["types-requests>=2.31.0"]
-lint = ["pulse-eco[types]", "mypy~=1.8.0", "ruff==0.3.2"]
+lint = ["pulse-eco[client,all-http,types]", "mypy~=1.8.0", "ruff==0.3.2"]
 docs = [
     "mkdocs",
     "mkdocstrings[python]",
@@ -52,7 +62,7 @@ docs = [
     "mkdocs-material",
 ]
 dev = [
-    "pulse-eco[test,lint,docs]",
+    "pulse-eco[client,all-http,test,lint,docs]",
     "pre-commit>=3.5.0",
     "pip-tools>=7.3.0",
     "ipython",
@@ -126,7 +136,7 @@ select = [
     "LOG",
     "RUF",
 ]
-ignore = ["E501", "ANN101", "PLR0913", "PLR0917", "ISC001"]
+ignore = ["E501", "ANN101", "PLR0913", "PLR0917", "ISC001", "TRY003"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*" = ["S101", "TCH001"]
