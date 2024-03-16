@@ -104,7 +104,7 @@ class PulseEcoAPI(PulseEcoAPIBase):
         if base_url is not None and PULSE_ECO_BASE_URL_FORMAT_ENV_KEY in os.environ:
             base_url = os.environ[PULSE_ECO_BASE_URL_FORMAT_ENV_KEY]
 
-        if session is not None:
+        if session is not None:  # pragma: no cover
             warnings.warn(
                 "The `session` parameter is deprecated. "
                 "Use `client` and `async_client` instead.",

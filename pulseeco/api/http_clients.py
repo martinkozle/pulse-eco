@@ -7,10 +7,10 @@ has_requests = find_spec("requests") is not None
 has_aiohttp = find_spec("aiohttp") is not None
 has_httpx = find_spec("httpx") is not None
 
-if has_requests:
+if has_requests:  # pragma: no cover
     import requests  # type: ignore[import-not-found, unused-ignore]
 
-if has_httpx:
+if has_httpx:  # pragma: no cover
     import httpx  # type: ignore[import-not-found, unused-ignore]
 
 if TYPE_CHECKING:
@@ -30,7 +30,7 @@ class _SingleUseHttpxClient:
 _SingleUseClient = Union[_SingleUseRequestsClient, _SingleUseHttpxClient]
 
 
-def get_fallback_sync_client() -> _SingleUseClient:
+def get_fallback_sync_client() -> _SingleUseClient:  # pragma: no cover
     if has_requests:
         return _SingleUseRequestsClient()
     if has_httpx:

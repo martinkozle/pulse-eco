@@ -1,8 +1,12 @@
 from __future__ import annotations
 
 import datetime
+from typing import TYPE_CHECKING, Iterator
 
+import aiohttp
+import httpx
 import pytest
+import requests
 
 from pulseeco import AveragePeriod, DataValueType, OverallValues, PulseEcoClient, Sensor
 from pulseeco.api.pulse_eco_api import PulseEcoAPI
@@ -13,6 +17,9 @@ from pulseeco.constants import (
     PULSE_ECO_USERNAME_ENV_KEY,
 )
 from pulseeco.utils import split_datetime_span
+
+if TYPE_CHECKING:
+    from collections.abc import AsyncIterator
 
 
 @pytest.fixture(scope="session")
@@ -70,6 +77,35 @@ def pulse_eco_skopje() -> PulseEcoClient:
 
 
 @pytest.fixture(scope="session")
+def pulse_eco_skopje_requests() -> Iterator[PulseEcoClient]:
+    with requests.Session() as client:
+        yield PulseEcoClient(city_name="skopje", client=client)
+
+
+@pytest.fixture(scope="session")
+def pulse_eco_skopje_httpx() -> Iterator[PulseEcoClient]:
+    with httpx.Client() as client:
+        yield PulseEcoClient(city_name="skopje", client=client)
+
+
+@pytest.fixture(scope="session")
+async def pulse_eco_skopje_async_httpx() -> AsyncIterator[PulseEcoClient]:
+    async with httpx.AsyncClient() as client:
+        yield PulseEcoClient(city_name="skopje", async_client=client)
+
+
+@pytest.fixture(scope="session")
+async def pulse_eco_skopje_async_aiohttp() -> AsyncIterator[PulseEcoClient]:
+    async with aiohttp.ClientSession() as client:
+        yield PulseEcoClient(city_name="skopje", async_client=client)
+
+
+@pytest.fixture(scope="session")
+def pulse_eco_skopje_async_no_client() -> PulseEcoClient:
+    return PulseEcoClient(city_name="skopje")
+
+
+@pytest.fixture(scope="session")
 def sensors_skopje(pulse_eco_skopje: PulseEcoClient) -> list[Sensor]:
     return pulse_eco_skopje.sensors()
 
@@ -114,12 +150,18 @@ def test_custom_pulse_eco_api() -> None:
     ), "`_pulse_eco_api` should be the same as the passed object"
 
 
-def test_sensor_skopje(
-    pulse_eco_skopje: PulseEcoClient, sensors_skopje: list[Sensor]
+@pytest.mark.asyncio(scope="session")
+async def test_sensor_skopje(
+    pulse_eco_skopje: PulseEcoClient, pulse_eco_skopje_async_httpx: PulseEcoClient
 ) -> None:
+    sensors_skopje = pulse_eco_skopje.sensors()
+    sensors_skopje_async = await pulse_eco_skopje_async_httpx.asensors()
+    assert sensors_skopje == sensors_skopje_async, "sensors should be the same"
     assert len(sensors_skopje) > 0, "there should be at least one sensor"
     sensor_id = sensors_skopje[0].sensor_id
     sensor = pulse_eco_skopje.sensor(sensor_id)
+    sensor_async = await pulse_eco_skopje_async_httpx.asensor(sensor_id)
+    assert sensor == sensor_async, "sensor should be the same"
     assert (
         sensor == sensors_skopje[0]
     ), "sensor should be the same as the one from sensors"
@@ -153,7 +195,10 @@ def test_split_datetime_span() -> None:
     assert datetimes == expected_datetimes, "datetime split should be consistent"
 
 
-def test_data_raw_skopje(pulse_eco_skopje: PulseEcoClient) -> None:
+@pytest.mark.asyncio(scope="session")
+async def test_data_raw_skopje(
+    pulse_eco_skopje: PulseEcoClient, pulse_eco_skopje_async_httpx: PulseEcoClient
+) -> None:
     from_ = "2017-03-15T02:00:00+01:00"
     to = "2017-04-19T12:00:00+01:00"
     data_raw = pulse_eco_skopje.data_raw(
@@ -162,11 +207,17 @@ def test_data_raw_skopje(pulse_eco_skopje: PulseEcoClient) -> None:
         type=DataValueType.PM10,
         sensor_id="1001",
     )
+    data_raw_async = await pulse_eco_skopje_async_httpx.adata_raw(
+        from_=from_,
+        to=to,
+        type=DataValueType.PM10,
+        sensor_id="1001",
+    )
+    assert data_raw == data_raw_async, "data raw should be the same"
     assert len(data_raw) > 0, "there should be at least one data value"
 
 
 def test_data_raw_past_span(
-    pulse_eco_skopje: PulseEcoClient,
     cities: list[str],
     data_raw_max_span_ago: datetime.datetime,
     now: datetime.datetime,
@@ -182,7 +233,10 @@ def test_data_raw_past_span(
             )
 
 
-def test_avg_data(pulse_eco_skopje: PulseEcoClient) -> None:
+@pytest.mark.asyncio(scope="session")
+async def test_avg_data(
+    pulse_eco_skopje: PulseEcoClient, pulse_eco_skopje_async_httpx: PulseEcoClient
+) -> None:
     from_ = "2019-03-01T12:00:00+00:00"
     to = "2020-05-01T12:00:00+00:00"
     for period in (AveragePeriod.DAY, AveragePeriod.WEEK, AveragePeriod.MONTH):
@@ -193,17 +247,35 @@ def test_avg_data(pulse_eco_skopje: PulseEcoClient) -> None:
             type=DataValueType.PM10,
             sensor_id="-1",
         )
+        avg_data_async = await pulse_eco_skopje_async_httpx.aavg_data(
+            period=period,
+            from_=from_,
+            to=to,
+            type=DataValueType.PM10,
+            sensor_id="-1",
+        )
+        assert avg_data == avg_data_async, "average data should be the same"
         assert len(avg_data) > 0, "there should be at least one data value"
 
 
-def test_data24h(pulse_eco_skopje: PulseEcoClient) -> None:
+@pytest.mark.asyncio(scope="session")
+async def test_data24h(
+    pulse_eco_skopje: PulseEcoClient, pulse_eco_skopje_async_httpx: PulseEcoClient
+) -> None:
     data24h = pulse_eco_skopje.data24h()
+    data24h_async = await pulse_eco_skopje_async_httpx.adata24h()
     assert len(data24h) > 0, "there should be at least one data value"
+    assert len(data24h_async) > 0, "there should be at least one data value"
 
 
-def test_current(pulse_eco_skopje: PulseEcoClient) -> None:
+@pytest.mark.asyncio(scope="session")
+async def test_current(
+    pulse_eco_skopje: PulseEcoClient, pulse_eco_skopje_async_httpx: PulseEcoClient
+) -> None:
     current = pulse_eco_skopje.current()
+    current_async = await pulse_eco_skopje_async_httpx.acurrent()
     assert len(current) > 0, "there should be at least one data value"
+    assert len(current_async) > 0, "there should be at least one data value"
 
 
 def test_overall_values_type() -> None:
@@ -218,3 +290,61 @@ def test_overall(cities: list[str]) -> None:
         assert (
             model_extra is None or len(model_extra) == 0
         ), "there shouldn't be any extra values"
+
+
+@pytest.mark.asyncio(scope="session")
+async def test_aoverall(pulse_eco_skopje_async_httpx: PulseEcoClient) -> None:
+    overall = await pulse_eco_skopje_async_httpx.aoverall()
+    model_extra = overall.values.model_extra
+    assert (
+        model_extra is None or len(model_extra) == 0
+    ), "there shouldn't be any extra values"
+
+
+@pytest.mark.asyncio(scope="session")
+async def test_compare_http_clients(
+    pulse_eco_skopje: PulseEcoClient,
+    pulse_eco_skopje_requests: PulseEcoClient,
+    pulse_eco_skopje_httpx: PulseEcoClient,
+    pulse_eco_skopje_async_httpx: PulseEcoClient,
+    pulse_eco_skopje_async_aiohttp: PulseEcoClient,
+    pulse_eco_skopje_async_no_client: PulseEcoClient,
+) -> None:
+    from_ = "2019-03-01T12:00:00+00:00"
+    to = "2020-05-01T12:00:00+00:00"
+    period = AveragePeriod.MONTH
+    type_ = DataValueType.PM10
+    sensor_id = "-1"
+    avg_data = [
+        sync_client.avg_data(
+            period=period,
+            from_=from_,
+            to=to,
+            type=type_,
+            sensor_id=sensor_id,
+        )
+        for sync_client in (
+            pulse_eco_skopje,
+            pulse_eco_skopje_requests,
+            pulse_eco_skopje_httpx,
+        )
+    ]
+    avg_data += [
+        await async_client.aavg_data(
+            period=period,
+            from_=from_,
+            to=to,
+            type=type_,
+            sensor_id=sensor_id,
+        )
+        for async_client in (
+            pulse_eco_skopje_async_httpx,
+            pulse_eco_skopje_async_aiohttp,
+            pulse_eco_skopje_async_no_client,
+        )
+    ]
+
+    assert all(
+        avg_data[0] == ad for ad in avg_data[1:]
+    ), "all avg data should be the same"
+    assert len(avg_data[0]) > 0, "there should be at least one data value"

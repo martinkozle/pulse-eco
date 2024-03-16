@@ -18,7 +18,7 @@ else:
 
 try:
     from pydantic import BaseModel, BeforeValidator, ConfigDict, Field, TypeAdapter
-except ImportError:
+except ImportError:  # pragma: no cover
     warnings.warn(
         "`pydantic` is not installed but is required for `PulseEcoClient`"
         ", it is included in the extra `client`"
