@@ -20,7 +20,7 @@ from pulseeco.utils import convert_datetime_to_str, split_datetime_span
 
 from .base import PulseEcoAPIBase
 from .data_types import DataValueAvg, DataValueRaw, Overall, Sensor
-from .http_clients import _get_fallback_sync_client
+from .http_clients import get_fallback_sync_client
 
 if TYPE_CHECKING:
     import datetime
@@ -119,7 +119,7 @@ class PulseEcoAPI(PulseEcoAPIBase):
         if client is not None:
             self._client = client
         else:
-            self._client = _get_fallback_sync_client()
+            self._client = get_fallback_sync_client()
 
         self._async_client = async_client
 

@@ -30,7 +30,7 @@ class _SingleUseHttpxClient:
 _SingleUseClient = Union[_SingleUseRequestsClient, _SingleUseHttpxClient]
 
 
-def _get_fallback_sync_client() -> _SingleUseClient:
+def get_fallback_sync_client() -> _SingleUseClient:
     if has_requests:
         return _SingleUseRequestsClient()
     if has_httpx:
