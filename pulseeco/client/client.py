@@ -66,6 +66,13 @@ class PulseEcoClient:
         """
         return Sensors.validate_python(self._pulse_eco_api.sensors())
 
+    async def asensors(self) -> list[Sensor]:
+        """Get all sensors for a city.
+
+        :return: a list of sensors
+        """
+        return Sensors.validate_python(await self._pulse_eco_api.asensors())
+
     def sensor(self, sensor_id: str) -> Sensor:
         """Get a sensor by it's ID.
 
@@ -73,6 +80,16 @@ class PulseEcoClient:
         :return: a sensor
         """
         return Sensor.model_validate(self._pulse_eco_api.sensor(sensor_id=sensor_id))
+
+    async def asensor(self, sensor_id: str) -> Sensor:
+        """Get a sensor by it's ID.
+
+        :param sensor_id: the unique ID of the sensor
+        :return: a sensor
+        """
+        return Sensor.model_validate(
+            await self._pulse_eco_api.asensor(sensor_id=sensor_id)
+        )
 
     def data_raw(
         self,
@@ -93,6 +110,32 @@ class PulseEcoClient:
         """
         return DataValues.validate_python(
             self._pulse_eco_api.data_raw(
+                from_=from_,
+                to=to,
+                type=type,
+                sensor_id=sensor_id,
+            )
+        )
+
+    async def adata_raw(
+        self,
+        from_: str | datetime.datetime,
+        to: str | datetime.datetime,
+        type: DataValueType | None = None,
+        sensor_id: str | None = None,
+    ) -> list[DataValue]:
+        """Get raw data for a city.
+
+        :param from_: the start datetime of the data
+            as a datetime object or an isoformat string
+        :param to: the end datetime of the data
+            as a datetime object or an isoformat string
+        :param type: the data value type, defaults to None
+        :param sensor_id: the unique ID of the sensor, defaults to None
+        :return: a list of data values
+        """
+        return DataValues.validate_python(
+            await self._pulse_eco_api.adata_raw(
                 from_=from_,
                 to=to,
                 type=type,
@@ -129,6 +172,35 @@ class PulseEcoClient:
             )
         )
 
+    async def aavg_data(
+        self,
+        period: AveragePeriod,
+        from_: str | datetime.datetime,
+        to: str | datetime.datetime,
+        type: DataValueType,
+        sensor_id: str | None = None,
+    ) -> list[DataValue]:
+        """Get average data for a city.
+
+        :param period: the period of the average data
+        :param from_: the start datetime of the data
+            as a datetime object or an isoformat string
+        :param to: the end datetime of the data
+            as a datetime object or an isoformat string
+        :param type: the data value type
+        :param sensor_id: the unique ID of the sensor, defaults to None
+        :return: a list of average data values
+        """
+        return DataValues.validate_python(
+            await self._pulse_eco_api.aavg_data(
+                period=period,
+                from_=from_,
+                to=to,
+                type=type,
+                sensor_id=sensor_id,
+            )
+        )
+
     def data24h(self) -> list[DataValue]:
         """Get 24h data for a city.
 
@@ -137,6 +209,15 @@ class PulseEcoClient:
         :return: a list of data values for the past 24 hours
         """
         return DataValues.validate_python(self._pulse_eco_api.data24h())
+
+    async def adata24h(self) -> list[DataValue]:
+        """Get 24h data for a city.
+
+        The data values are sorted ascending by their timestamp.
+
+        :return: a list of data values for the past 24 hours
+        """
+        return DataValues.validate_python(await self._pulse_eco_api.adata24h())
 
     def current(self) -> list[DataValue]:
         """Get the last received valid data for each sensor in a city.
@@ -147,9 +228,25 @@ class PulseEcoClient:
         """
         return DataValues.validate_python(self._pulse_eco_api.current())
 
+    async def acurrent(self) -> list[DataValue]:
+        """Get the last received valid data for each sensor in a city.
+
+        Will not return sensor data older than 2 hours.
+
+        :return: a list of current data values
+        """
+        return DataValues.validate_python(await self._pulse_eco_api.acurrent())
+
     def overall(self) -> Overall:
         """Get the current average data for all sensors per value for a city.
 
         :return: the overall data for the city
         """
         return Overall.model_validate(self._pulse_eco_api.overall())
+
+    async def aoverall(self) -> Overall:
+        """Get the current average data for all sensors per value for a city.
+
+        :return: the overall data for the city
+        """
+        return Overall.model_validate(await self._pulse_eco_api.aoverall())
