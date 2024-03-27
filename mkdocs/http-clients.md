@@ -1,4 +1,4 @@
-# HTTP Client
+# HTTP Clients
 
 The `pulse-eco` package is designed to be modular and compatible with different HTTP clients.
 

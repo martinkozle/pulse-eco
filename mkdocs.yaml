@@ -23,6 +23,7 @@ markdown_extensions:
 nav:
   - index.md
   - example-usage.md
+  - http-clients.md
   - environment-variables.md
   - PulseEcoClient.md
   - PulseEcoAPI.md
