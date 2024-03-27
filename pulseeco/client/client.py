@@ -112,7 +112,7 @@ class PulseEcoClient:
             self._pulse_eco_api.data_raw(
                 from_=from_,
                 to=to,
-                type=type,
+                type=type.value if type is not None else None,
                 sensor_id=sensor_id,
             )
         )
@@ -138,7 +138,7 @@ class PulseEcoClient:
             await self._pulse_eco_api.adata_raw(
                 from_=from_,
                 to=to,
-                type=type,
+                type=type.value if type is not None else None,
                 sensor_id=sensor_id,
             )
         )
@@ -167,7 +167,7 @@ class PulseEcoClient:
                 period=period,
                 from_=from_,
                 to=to,
-                type=type,
+                type=type.value,
                 sensor_id=sensor_id,
             )
         )
@@ -196,7 +196,7 @@ class PulseEcoClient:
                 period=period,
                 from_=from_,
                 to=to,
-                type=type,
+                type=type.value,
                 sensor_id=sensor_id,
             )
         )
