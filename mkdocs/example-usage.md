@@ -5,7 +5,7 @@
 Authentication is not required for fetching data. But if provided, it has to be valid. Authentication is per city.
 
 ```python
-from pulseeco import PulseEcoClient
+from pulseeco.client import PulseEcoClient
 
 pulse_eco = PulseEcoClient(city_name="skopje", auth=("user", "pass"))
 ```
@@ -63,7 +63,7 @@ Sensor(
 
 ```pycon
 >>> import datetime
->>> from pulseeco import DataValueType
+>>> from pulseeco.client import DataValueType
 >>> pulse_eco.data_raw(
 ...   from_=datetime.datetime(year=2017, month=3, day=15, hour=2),
 ...   to=datetime.datetime(year=2017, month=4, day=19, hour=12),
@@ -85,7 +85,7 @@ sensor_id `"-1"` is a magic value that gives average values for the whole city.
 
 ```pycon
 >>> import datetime
->>> from pulseeco import AveragePeriod, DataValueType
+>>> from pulseeco.client import AveragePeriod, DataValueType
 >>> pulse_eco.avg_data(
 ...   period=AveragePeriod.MONTH,
 ...   from_=datetime.datetime(year=2019, month=3, day=1, hour=12),

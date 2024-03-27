@@ -1,10 +1,26 @@
-from .client import PulseEcoClient
-from .enums import AveragePeriod, DataValueType, SensorStatus, SensorType
+from importlib.util import find_spec
 
-__all__ = [
-    "AveragePeriod",
-    "DataValueType",
-    "PulseEcoClient",
-    "SensorStatus",
-    "SensorType",
-]
+if find_spec("pydantic") is not None:
+    from .client import (
+        AveragePeriod,
+        DataValue,
+        DataValueType,
+        Overall,
+        OverallValues,
+        PulseEcoClient,
+        Sensor,
+        SensorStatus,
+        SensorType,
+    )
+
+    __all__ = [
+        "AveragePeriod",
+        "DataValue",
+        "DataValueType",
+        "Overall",
+        "OverallValues",
+        "PulseEcoClient",
+        "Sensor",
+        "SensorStatus",
+        "SensorType",
+    ]
