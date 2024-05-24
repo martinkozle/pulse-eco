@@ -195,6 +195,20 @@ def test_split_datetime_span() -> None:
     assert datetimes == expected_datetimes, "datetime split should be consistent"
 
 
+def test_split_datetime_span_edge_case() -> None:
+    fr = "2019-03-17T12:00:00"
+    to = "2019-03-24T12:00:01"
+    td = datetime.timedelta(days=7)
+    datetimes = list(split_datetime_span(fr, to, td))
+    expected_datetimes = [
+        (
+            datetime.datetime(2019, 3, 17, 12, 0),  # noqa: DTZ001
+            datetime.datetime(2019, 3, 24, 12, 0),  # noqa: DTZ001
+        ),
+    ]
+    assert datetimes == expected_datetimes, "datetime split should be consistent"
+
+
 @pytest.mark.asyncio(scope="session")
 async def test_data_raw_skopje(
     pulse_eco_skopje: PulseEcoClient, pulse_eco_skopje_async_httpx: PulseEcoClient
