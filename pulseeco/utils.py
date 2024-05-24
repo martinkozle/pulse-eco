@@ -35,5 +35,6 @@ def split_datetime_span(
     while current + td < to:
         current += td
         yield prev, current
-        prev = current + timedelta(seconds=1)
-    yield prev, to
+        prev = current = current + timedelta(seconds=1)
+    if prev < to:
+        yield prev, to
