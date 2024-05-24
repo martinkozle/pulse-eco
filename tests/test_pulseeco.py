@@ -185,10 +185,10 @@ def test_split_datetime_span() -> None:
         ),
         (
             datetime.datetime(2019, 3, 24, 12, 0, 1),  # noqa: DTZ001
-            datetime.datetime(2019, 3, 31, 12, 0),  # noqa: DTZ001
+            datetime.datetime(2019, 3, 31, 12, 0, 1),  # noqa: DTZ001
         ),
         (
-            datetime.datetime(2019, 3, 31, 12, 0, 1),  # noqa: DTZ001
+            datetime.datetime(2019, 3, 31, 12, 0, 2),  # noqa: DTZ001
             datetime.datetime(2019, 4, 3, 14, 57, 3),  # noqa: DTZ001
         ),
     ]
