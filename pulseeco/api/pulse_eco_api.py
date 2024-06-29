@@ -169,7 +169,11 @@ class PulseEcoAPI(PulseEcoAPIBase):
 
         url = self._base_url.format(city_name=self.city_name, end_point=end_point)
 
-        response = await self._async_client.get(url, params=params)
+        # httpx does not support auth None
+        if self._auth is not None:
+            response = await self._async_client.get(url, params=params, auth=self._auth)
+        else:
+            response = await self._async_client.get(url, params=params)
         response.raise_for_status()
 
         # In case of aiohttp, the response.json() is a coroutine function
