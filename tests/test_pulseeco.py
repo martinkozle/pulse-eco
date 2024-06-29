@@ -8,7 +8,7 @@ import httpx
 import pytest
 import requests
 
-from pulseeco import AveragePeriod, DataValueType, OverallValues, PulseEcoClient, Sensor
+from pulseeco import AveragePeriod, DataValueType, OverallValues, PulseEcoClient
 from pulseeco.api.pulse_eco_api import PulseEcoAPI
 from pulseeco.constants import (
     DATA_RAW_MAX_SPAN,
@@ -103,11 +103,6 @@ async def pulse_eco_skopje_async_aiohttp() -> AsyncIterator[PulseEcoClient]:
 @pytest.fixture(scope="session")
 def pulse_eco_skopje_async_no_client() -> PulseEcoClient:
     return PulseEcoClient(city_name="skopje")
-
-
-@pytest.fixture(scope="session")
-def sensors_skopje(pulse_eco_skopje: PulseEcoClient) -> list[Sensor]:
-    return pulse_eco_skopje.sensors()
 
 
 @pytest.fixture(scope="session")
