@@ -11,9 +11,9 @@ from .enums import (  # noqa: TCH001
     SensorType,
 )
 
-if sys.version_info < (3, 9):
+if sys.version_info < (3, 9):  # pragma: no cover
     from typing_extensions import Annotated
-else:
+else:  # pragma: no cover
     from typing import Annotated
 
 try:

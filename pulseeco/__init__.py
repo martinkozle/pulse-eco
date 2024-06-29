@@ -1,6 +1,6 @@
 from importlib.util import find_spec
 
-if find_spec("pydantic") is not None:
+if find_spec("pydantic") is not None:  # pragma: no cover
     from .client import (
         AveragePeriod,
         DataValue,
