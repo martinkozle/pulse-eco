@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import datetime
-from typing import TYPE_CHECKING, Iterator
+from typing import TYPE_CHECKING
 
 import aiohttp
 import httpx
@@ -19,7 +19,7 @@ from pulseeco.constants import (
 from pulseeco.utils import split_datetime_span
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator
+    from collections.abc import AsyncIterator, Iterator
 
 
 @pytest.fixture(scope="session")

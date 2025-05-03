@@ -95,7 +95,7 @@ strict = true
 target-version = ["py38"]
 
 [tool.ruff]
-target-version = "py38"
+target-version = "py39"
 preview = true
 include = ["pulseeco/**/*.py", "tests/**/*.py", "pyproject.toml"]
 

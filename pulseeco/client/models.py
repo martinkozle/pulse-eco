@@ -1,8 +1,7 @@
 from __future__ import annotations
 
-import sys
 import warnings
-from typing import TYPE_CHECKING, Any, List, Optional
+from typing import TYPE_CHECKING, Any, Optional
 
 if TYPE_CHECKING:
     import datetime
@@ -13,10 +12,7 @@ if TYPE_CHECKING:
         SensorType,
     )
 
-if sys.version_info < (3, 9):  # pragma: no cover
-    from typing_extensions import Annotated
-else:  # pragma: no cover
-    from typing import Annotated
+from typing import Annotated
 
 try:
     from pydantic import BaseModel, BeforeValidator, ConfigDict, Field, TypeAdapter
@@ -41,7 +37,7 @@ class Sensor(BaseModel):
     status: SensorStatus = Field(description="The current status of the sensor")
 
 
-Sensors = TypeAdapter(List[Sensor])
+Sensors = TypeAdapter(list[Sensor])
 
 
 class DataValue(BaseModel):
@@ -61,7 +57,7 @@ class DataValue(BaseModel):
     )
 
 
-DataValues = TypeAdapter(List[DataValue])
+DataValues = TypeAdapter(list[DataValue])
 
 
 def validate_na(v: Any) -> Any | None:  # noqa: ANN401
