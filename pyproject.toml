@@ -23,7 +23,7 @@ dynamic = ["version"]
 description = "pulse.eco API wrapper"
 readme = "README.md"
 license = "MIT"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 authors = [{ name = "martinkozle", email = "martinkozle@yahoo.com" }]
 keywords = [
     "pulse.eco",
@@ -86,7 +86,7 @@ include = ["/pulseeco"]
 include = ["/pulseeco"]
 
 [tool.mypy]
-python_version = "3.8"
+python_version = "3.9"
 plugins = ["pydantic.mypy"]
 modules = ["pulseeco", "tests"]
 strict = true
