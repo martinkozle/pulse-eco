@@ -55,7 +55,7 @@ test = [
     "python-dotenv~=1.0.0",
 ]
 types = ["types-requests>=2.31.0"]
-lint = ["pulse-eco[client,all-http,types]", "mypy~=1.8.0", "ruff==0.3.2"]
+lint = ["pulse-eco[client,all-http,types]", "mypy~=1.8.0", "ruff==0.11.8"]
 docs = [
     "mkdocs",
     "mkdocstrings[python]",
@@ -137,7 +137,7 @@ select = [
     "LOG",
     "RUF",
 ]
-ignore = ["E501", "ANN101", "PLR0913", "PLR0917", "ISC001", "TRY003"]
+ignore = ["E501", "PLR0913", "PLR0917", "ISC001", "TRY003"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*" = ["S101", "TCH001"]

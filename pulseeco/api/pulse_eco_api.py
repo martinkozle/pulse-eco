@@ -4,7 +4,7 @@ import asyncio
 import inspect
 import os
 import warnings
-from typing import TYPE_CHECKING, Any, List, cast
+from typing import TYPE_CHECKING, Any, cast
 
 from pulseeco.constants import (
     AVG_DATA_MAX_SPAN,
@@ -19,12 +19,12 @@ from pulseeco.constants import (
 from pulseeco.utils import convert_datetime_to_str, split_datetime_span
 
 from .base import PulseEcoAPIBase
-from .data_types import DataValueAvg, DataValueRaw, Overall, Sensor
 from .http_clients import get_fallback_sync_client
 
 if TYPE_CHECKING:
     import datetime
 
+    from .data_types import DataValueAvg, DataValueRaw, Overall, Sensor
     from .http_clients import (
         ASYNC_CLIENT,
         CLIENT,
@@ -186,14 +186,14 @@ class PulseEcoAPI(PulseEcoAPIBase):
 
         :return: a list of sensors
         """
-        return cast(List[Sensor], self._base_request("sensor"))
+        return cast("list[Sensor]", self._base_request("sensor"))
 
     async def asensors(self) -> list[Sensor]:
         """Get all sensors for a city.
 
         :return: a list of sensors
         """
-        return cast(List[Sensor], await self._abase_request("sensor"))
+        return cast("list[Sensor]", await self._abase_request("sensor"))
 
     def sensor(self, sensor_id: str) -> Sensor:
         """Get a sensor by it's ID
@@ -201,7 +201,7 @@ class PulseEcoAPI(PulseEcoAPIBase):
         :param sensor_id: the unique ID of the sensor
         :return: a sensor
         """
-        return cast(Sensor, self._base_request(f"sensor/{sensor_id}"))
+        return cast("Sensor", self._base_request(f"sensor/{sensor_id}"))
 
     async def asensor(self, sensor_id: str) -> Sensor:
         """Get a sensor by it's ID
@@ -209,7 +209,7 @@ class PulseEcoAPI(PulseEcoAPIBase):
         :param sensor_id: the unique ID of the sensor
         :return: a sensor
         """
-        return cast(Sensor, await self._abase_request(f"sensor/{sensor_id}"))
+        return cast("Sensor", await self._abase_request(f"sensor/{sensor_id}"))
 
     def data_raw(
         self,
@@ -245,7 +245,7 @@ class PulseEcoAPI(PulseEcoAPIBase):
             }
             params = {k: v for k, v in params.items() if v is not None}
             data_value = cast(
-                List[DataValueRaw],
+                "list[DataValueRaw]",
                 self._base_request("dataRaw", params=params),
             )
             data += data_value
@@ -317,8 +317,7 @@ class PulseEcoAPI(PulseEcoAPIBase):
         """
         if period not in {"day", "week", "month"}:
             warnings.warn(
-                "Warning! Invalid value for period. "
-                "Should be one of: day, week, month",
+                "Warning! Invalid value for period. Should be one of: day, week, month",
                 stacklevel=2,
             )
         data: list[DataValueAvg] = []
@@ -332,7 +331,7 @@ class PulseEcoAPI(PulseEcoAPIBase):
             }
             params = {k: v for k, v in params.items() if v is not None}
             data_value = cast(
-                List[DataValueAvg],
+                "list[DataValueAvg]",
                 self._base_request(f"avgData/{period}", params=params),
             )
             data += data_value
@@ -359,8 +358,7 @@ class PulseEcoAPI(PulseEcoAPIBase):
         """
         if period not in {"day", "week", "month"}:
             warnings.warn(
-                "Warning! Invalid value for period. "
-                "Should be one of: day, week, month",
+                "Warning! Invalid value for period. Should be one of: day, week, month",
                 stacklevel=2,
             )
         coroutines: list[asyncio.Future[list[DataValueAvg]]] = []
@@ -392,7 +390,7 @@ class PulseEcoAPI(PulseEcoAPIBase):
 
         :return: a list of data values for the past 24 hours
         """
-        return cast(List[DataValueRaw], self._base_request("data24h"))
+        return cast("list[DataValueRaw]", self._base_request("data24h"))
 
     async def adata24h(self) -> list[DataValueRaw]:
         """Get 24h data for a city.
@@ -401,7 +399,7 @@ class PulseEcoAPI(PulseEcoAPIBase):
 
         :return: a list of data values for the past 24 hours
         """
-        return cast(List[DataValueRaw], await self._abase_request("data24h"))
+        return cast("list[DataValueRaw]", await self._abase_request("data24h"))
 
     def current(self) -> list[DataValueRaw]:
         """Get the last received valid data for each sensor in a city
@@ -410,7 +408,7 @@ class PulseEcoAPI(PulseEcoAPIBase):
 
         :return: a list of current data values
         """
-        return cast(List[DataValueRaw], self._base_request("current"))
+        return cast("list[DataValueRaw]", self._base_request("current"))
 
     async def acurrent(self) -> list[DataValueRaw]:
         """Get the last received valid data for each sensor in a city
@@ -419,7 +417,7 @@ class PulseEcoAPI(PulseEcoAPIBase):
 
         :return: a list of current data values
         """
-        return cast(List[DataValueRaw], await self._abase_request("current"))
+        return cast("list[DataValueRaw]", await self._abase_request("current"))
 
     def overall(
         self,
@@ -446,7 +444,7 @@ class PulseEcoAPI(PulseEcoAPIBase):
 
         :return: the overall data for the city
         """
-        return cast(Overall, self._base_request("overall"))
+        return cast("Overall", self._base_request("overall"))
 
     async def aoverall(
         self,
@@ -473,4 +471,4 @@ class PulseEcoAPI(PulseEcoAPIBase):
 
         :return: the overall data for the city
         """
-        return cast(Overall, await self._abase_request("overall"))
+        return cast("Overall", await self._abase_request("overall"))

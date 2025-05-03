@@ -1,15 +1,17 @@
 from __future__ import annotations
 
-import datetime  # noqa: TCH003
 import sys
 import warnings
-from typing import Any, List, Optional
+from typing import TYPE_CHECKING, Any, List, Optional
 
-from .enums import (  # noqa: TCH001
-    DataValueType,
-    SensorStatus,
-    SensorType,
-)
+if TYPE_CHECKING:
+    import datetime
+
+    from .enums import (
+        DataValueType,
+        SensorStatus,
+        SensorType,
+    )
 
 if sys.version_info < (3, 9):  # pragma: no cover
     from typing_extensions import Annotated
@@ -48,11 +50,11 @@ class DataValue(BaseModel):
         description="Timestamp of when the measurement was taken"
     )
     type: DataValueType = Field(description="The type of the data value taken")
-    position: Optional[str] = Field(  # noqa: UP007
+    position: str | None = Field(
         description="Latitude and longitude GPS coordinates of the sensor"
     )
     value: int = Field(description="The actual value of the measurement taken")
-    year: Optional[int] = Field(  # noqa: UP007
+    year: int | None = Field(
         default=None,
         description="Year when the measurement was taken"
         ", not included with newer data, prefer stamp",
