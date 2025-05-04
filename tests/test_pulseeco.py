@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 import ssl
-from typing import TYPE_CHECKING, Iterator
+from typing import TYPE_CHECKING
 
 import aiohttp
 import certifi
@@ -21,7 +21,7 @@ from pulseeco.constants import (
 from pulseeco.utils import split_datetime_span
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator
+    from collections.abc import AsyncIterator, Iterator
 
 
 @pytest.fixture(scope="session")
@@ -162,9 +162,9 @@ async def test_sensor_skopje(
     sensor = pulse_eco_skopje.sensor(sensor_id)
     sensor_async = await pulse_eco_skopje_async_httpx.asensor(sensor_id)
     assert sensor == sensor_async, "sensor should be the same"
-    assert (
-        sensor == sensors_skopje[0]
-    ), "sensor should be the same as the one from sensors"
+    assert sensor == sensors_skopje[0], (
+        "sensor should be the same as the one from sensors"
+    )
 
 
 def test_sensors_all_cities(cities: list[str]) -> None:
@@ -301,18 +301,18 @@ def test_overall(cities: list[str]) -> None:
         pulse_eco = PulseEcoClient(city_name=city)
         overall = pulse_eco.overall()
         model_extra = overall.values.model_extra
-        assert (
-            model_extra is None or len(model_extra) == 0
-        ), "there shouldn't be any extra values"
+        assert model_extra is None or len(model_extra) == 0, (
+            "there shouldn't be any extra values"
+        )
 
 
 @pytest.mark.asyncio(scope="session")
 async def test_aoverall(pulse_eco_skopje_async_httpx: PulseEcoClient) -> None:
     overall = await pulse_eco_skopje_async_httpx.aoverall()
     model_extra = overall.values.model_extra
-    assert (
-        model_extra is None or len(model_extra) == 0
-    ), "there shouldn't be any extra values"
+    assert model_extra is None or len(model_extra) == 0, (
+        "there shouldn't be any extra values"
+    )
 
 
 @pytest.mark.asyncio(scope="session")
@@ -358,7 +358,7 @@ async def test_compare_http_clients(
         )
     ]
 
-    assert all(
-        avg_data[0] == ad for ad in avg_data[1:]
-    ), "all avg data should be the same"
+    assert all(avg_data[0] == ad for ad in avg_data[1:]), (
+        "all avg data should be the same"
+    )
     assert len(avg_data[0]) > 0, "there should be at least one data value"

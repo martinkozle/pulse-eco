@@ -1,20 +1,10 @@
 from __future__ import annotations
 
-import datetime  # noqa: TCH003
-import sys
+import datetime  # noqa: TC003
 import warnings
-from typing import Any, List, Optional
+from typing import Annotated, Any, Optional
 
-from .enums import (  # noqa: TCH001
-    DataValueType,
-    SensorStatus,
-    SensorType,
-)
-
-if sys.version_info < (3, 9):  # pragma: no cover
-    from typing_extensions import Annotated
-else:  # pragma: no cover
-    from typing import Annotated
+from .enums import DataValueType, SensorStatus, SensorType  # noqa: TC001
 
 try:
     from pydantic import BaseModel, BeforeValidator, ConfigDict, Field, TypeAdapter
@@ -39,7 +29,7 @@ class Sensor(BaseModel):
     status: SensorStatus = Field(description="The current status of the sensor")
 
 
-Sensors = TypeAdapter(List[Sensor])
+Sensors = TypeAdapter(list[Sensor])
 
 
 class DataValue(BaseModel):
@@ -48,18 +38,18 @@ class DataValue(BaseModel):
         description="Timestamp of when the measurement was taken"
     )
     type: DataValueType = Field(description="The type of the data value taken")
-    position: Optional[str] = Field(  # noqa: UP007
+    position: Optional[str] = Field(  # noqa: UP045
         description="Latitude and longitude GPS coordinates of the sensor"
     )
     value: int = Field(description="The actual value of the measurement taken")
-    year: Optional[int] = Field(  # noqa: UP007
+    year: Optional[int] = Field(  # noqa: UP045
         default=None,
         description="Year when the measurement was taken"
         ", not included with newer data, prefer stamp",
     )
 
 
-DataValues = TypeAdapter(List[DataValue])
+DataValues = TypeAdapter(list[DataValue])
 
 
 def validate_na(v: Any) -> Any | None:  # noqa: ANN401

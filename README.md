@@ -17,7 +17,7 @@ pulse.eco client for Python.
 
 ## Installation
 
-Requires Python version 3.8+.
+Requires Python version 3.9+.
 
 The `pulse-eco` package comes with no base dependencies, everything is an extra. A sensible default is:
 
@@ -53,7 +53,7 @@ If the time range is larger than the maximum, the pulse-eco Python client perfor
 
 ### Create dev environment
 
-Activate a Python 3.8 environment and run:
+Activate a Python 3.9 environment and run:
 
 ```console
 hatch env create dev

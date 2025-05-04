@@ -1,21 +1,32 @@
-name: publish-docs
+name: Publish docs
+
 on:
   push:
     branches:
       - main
+    paths:
+      - .github/workflows/docs.yml
+      - mkdocs.yaml
+      - mkdocs/**
+      - pulseeco/**
+      - README.md
 
 jobs:
-  build:
+  publish-docs:
     name: Deploy docs via GitHub Pages
     runs-on: ubuntu-latest
     steps:
       - name: Checkout main
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Build docs
+        run: uv run mkdocs build
 
       - name: Deploy docs
-        uses: mhausenblas/mkdocs-deploy-gh-pages@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CONFIG_FILE: mkdocs.yaml
-          EXTRA_PACKAGES: build-base
-          REQUIREMENTS: docs-requirements.txt
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site

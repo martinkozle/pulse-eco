@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
-from typing import Iterator
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 
 def convert_datetime_to_str(datetime: datetime) -> str:
