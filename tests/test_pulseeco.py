@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import datetime
+import ssl
 from typing import TYPE_CHECKING, Iterator
 
 import aiohttp
+import certifi
 import httpx
 import pytest
 import requests
@@ -96,7 +98,10 @@ async def pulse_eco_skopje_async_httpx() -> AsyncIterator[PulseEcoClient]:
 
 @pytest.fixture(scope="session")
 async def pulse_eco_skopje_async_aiohttp() -> AsyncIterator[PulseEcoClient]:
-    async with aiohttp.ClientSession() as client:
+    connector = aiohttp.TCPConnector(
+        verify_ssl=True, ssl=ssl.create_default_context(cafile=certifi.where())
+    )
+    async with aiohttp.ClientSession(connector=connector) as client:
         yield PulseEcoClient(city_name="skopje", async_client=client)
 
 
