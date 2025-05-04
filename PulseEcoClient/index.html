@@ -735,6 +735,12 @@
 
 
 
+
+
+
+
+
+
   <div class="doc doc-children">
 
 
@@ -759,6 +765,12 @@
 
 
         <p>High level pulse.eco client.</p>
+
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>pulseeco/client/client.py</code></summary>
@@ -1270,9 +1282,11 @@
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>city_name</code></td>
             <td>
-                  <code>str</code>
+                <code>city_name</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1284,9 +1298,11 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>auth</code></td>
             <td>
-                  <code>tuple[str, str] | None</code>
+                <code>auth</code>
+            </td>
+            <td>
+                  <code><span title="tuple">tuple</span>[<span title="str">str</span>, <span title="str">str</span>] | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1298,9 +1314,11 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>base_url</code></td>
             <td>
-                  <code>str</code>
+                <code>base_url</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1312,7 +1330,9 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>session</code></td>
+            <td>
+                <code>session</code>
+            </td>
             <td>
                   <code>None</code>
             </td>
@@ -1326,7 +1346,9 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>client</code></td>
+            <td>
+                <code>client</code>
+            </td>
             <td>
                   <code><span title="pulseeco.api.http_clients.CLIENT">CLIENT</span> | None</code>
             </td>
@@ -1340,7 +1362,9 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>async_client</code></td>
+            <td>
+                <code>async_client</code>
+            </td>
             <td>
                   <code><span title="pulseeco.api.http_clients.ASYNC_CLIENT">ASYNC_CLIENT</span> | None</code>
             </td>
@@ -1354,7 +1378,9 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>pulse_eco_api</code></td>
+            <td>
+                <code>pulse_eco_api</code>
+            </td>
             <td>
                   <code><span title="pulseeco.api.base.PulseEcoAPIBase">PulseEcoAPIBase</span> | None</code>
             </td>
@@ -1369,6 +1395,7 @@
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>pulseeco/client/client.py</code></summary>
@@ -1485,7 +1512,9 @@
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>period</code></td>
+            <td>
+                <code>period</code>
+            </td>
             <td>
                   <code><span title="pulseeco.client.enums.AveragePeriod">AveragePeriod</span></code>
             </td>
@@ -1499,9 +1528,11 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>from_</code></td>
             <td>
-                  <code>str | <span title="datetime.datetime">datetime</span></code>
+                <code>from_</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span> | <span title="datetime.datetime">datetime</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1513,9 +1544,11 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>to</code></td>
             <td>
-                  <code>str | <span title="datetime.datetime">datetime</span></code>
+                <code>to</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span> | <span title="datetime.datetime">datetime</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1527,7 +1560,9 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>type</code></td>
+            <td>
+                <code>type</code>
+            </td>
             <td>
                   <code><span title="pulseeco.client.enums.DataValueType">DataValueType</span></code>
             </td>
@@ -1541,9 +1576,11 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>sensor_id</code></td>
             <td>
-                  <code>str | None</code>
+                <code>sensor_id</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span> | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1569,7 +1606,7 @@
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>list[<span title="pulseeco.client.models.DataValue">DataValue</span>]</code>
+                  <code><span title="list">list</span>[<span title="pulseeco.client.models.DataValue">DataValue</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1579,6 +1616,7 @@
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>pulseeco/client/client.py</code></summary>
@@ -1673,7 +1711,7 @@
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>list[<span title="pulseeco.client.models.DataValue">DataValue</span>]</code>
+                  <code><span title="list">list</span>[<span title="pulseeco.client.models.DataValue">DataValue</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1683,6 +1721,7 @@
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>pulseeco/client/client.py</code></summary>
@@ -1737,7 +1776,7 @@
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>list[<span title="pulseeco.client.models.DataValue">DataValue</span>]</code>
+                  <code><span title="list">list</span>[<span title="pulseeco.client.models.DataValue">DataValue</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1747,6 +1786,7 @@
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>pulseeco/client/client.py</code></summary>
@@ -1801,9 +1841,11 @@
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>from_</code></td>
             <td>
-                  <code>str | <span title="datetime.datetime">datetime</span></code>
+                <code>from_</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span> | <span title="datetime.datetime">datetime</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1815,9 +1857,11 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>to</code></td>
             <td>
-                  <code>str | <span title="datetime.datetime">datetime</span></code>
+                <code>to</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span> | <span title="datetime.datetime">datetime</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1829,7 +1873,9 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>type</code></td>
+            <td>
+                <code>type</code>
+            </td>
             <td>
                   <code><span title="pulseeco.client.enums.DataValueType">DataValueType</span> | None</code>
             </td>
@@ -1843,9 +1889,11 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>sensor_id</code></td>
             <td>
-                  <code>str | None</code>
+                <code>sensor_id</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span> | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1871,7 +1919,7 @@
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>list[<span title="pulseeco.client.models.DataValue">DataValue</span>]</code>
+                  <code><span title="list">list</span>[<span title="pulseeco.client.models.DataValue">DataValue</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1881,6 +1929,7 @@
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>pulseeco/client/client.py</code></summary>
@@ -1979,6 +2028,7 @@
       </tbody>
     </table>
 
+
             <details class="quote">
               <summary>Source code in <code>pulseeco/client/client.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-247">247</a></span>
@@ -2028,9 +2078,11 @@
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>sensor_id</code></td>
             <td>
-                  <code>str</code>
+                <code>sensor_id</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2066,6 +2118,7 @@
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>pulseeco/client/client.py</code></summary>
@@ -2121,7 +2174,7 @@
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>list[<span title="pulseeco.client.models.Sensor">Sensor</span>]</code>
+                  <code><span title="list">list</span>[<span title="pulseeco.client.models.Sensor">Sensor</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2131,6 +2184,7 @@
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>pulseeco/client/client.py</code></summary>
@@ -2177,7 +2231,9 @@
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>period</code></td>
+            <td>
+                <code>period</code>
+            </td>
             <td>
                   <code><span title="pulseeco.client.enums.AveragePeriod">AveragePeriod</span></code>
             </td>
@@ -2191,9 +2247,11 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>from_</code></td>
             <td>
-                  <code>str | <span title="datetime.datetime">datetime</span></code>
+                <code>from_</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span> | <span title="datetime.datetime">datetime</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2205,9 +2263,11 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>to</code></td>
             <td>
-                  <code>str | <span title="datetime.datetime">datetime</span></code>
+                <code>to</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span> | <span title="datetime.datetime">datetime</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2219,7 +2279,9 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>type</code></td>
+            <td>
+                <code>type</code>
+            </td>
             <td>
                   <code><span title="pulseeco.client.enums.DataValueType">DataValueType</span></code>
             </td>
@@ -2233,9 +2295,11 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>sensor_id</code></td>
             <td>
-                  <code>str | None</code>
+                <code>sensor_id</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span> | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2261,7 +2325,7 @@
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>list[<span title="pulseeco.client.models.DataValue">DataValue</span>]</code>
+                  <code><span title="list">list</span>[<span title="pulseeco.client.models.DataValue">DataValue</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2271,6 +2335,7 @@
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>pulseeco/client/client.py</code></summary>
@@ -2361,7 +2426,7 @@
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>list[<span title="pulseeco.client.models.DataValue">DataValue</span>]</code>
+                  <code><span title="list">list</span>[<span title="pulseeco.client.models.DataValue">DataValue</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2371,6 +2436,7 @@
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>pulseeco/client/client.py</code></summary>
@@ -2421,7 +2487,7 @@
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>list[<span title="pulseeco.client.models.DataValue">DataValue</span>]</code>
+                  <code><span title="list">list</span>[<span title="pulseeco.client.models.DataValue">DataValue</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2431,6 +2497,7 @@
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>pulseeco/client/client.py</code></summary>
@@ -2481,9 +2548,11 @@
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>from_</code></td>
             <td>
-                  <code>str | <span title="datetime.datetime">datetime</span></code>
+                <code>from_</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span> | <span title="datetime.datetime">datetime</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2495,9 +2564,11 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>to</code></td>
             <td>
-                  <code>str | <span title="datetime.datetime">datetime</span></code>
+                <code>to</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span> | <span title="datetime.datetime">datetime</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2509,7 +2580,9 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>type</code></td>
+            <td>
+                <code>type</code>
+            </td>
             <td>
                   <code><span title="pulseeco.client.enums.DataValueType">DataValueType</span> | None</code>
             </td>
@@ -2523,9 +2596,11 @@
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>sensor_id</code></td>
             <td>
-                  <code>str | None</code>
+                <code>sensor_id</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span> | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2551,7 +2626,7 @@
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>list[<span title="pulseeco.client.models.DataValue">DataValue</span>]</code>
+                  <code><span title="list">list</span>[<span title="pulseeco.client.models.DataValue">DataValue</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2561,6 +2636,7 @@
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>pulseeco/client/client.py</code></summary>
@@ -2655,6 +2731,7 @@
       </tbody>
     </table>
 
+
             <details class="quote">
               <summary>Source code in <code>pulseeco/client/client.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-240">240</a></span>
@@ -2700,9 +2777,11 @@
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>sensor_id</code></td>
             <td>
-                  <code>str</code>
+                <code>sensor_id</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2738,6 +2817,7 @@
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>pulseeco/client/client.py</code></summary>
@@ -2785,7 +2865,7 @@
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>list[<span title="pulseeco.client.models.Sensor">Sensor</span>]</code>
+                  <code><span title="list">list</span>[<span title="pulseeco.client.models.Sensor">Sensor</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2795,6 +2875,7 @@
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>pulseeco/client/client.py</code></summary>
