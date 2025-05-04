@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling~=1.21.0", "hatch-vcs"]
+requires = ["hatchling~=1.27.0", "uv-dynamic-versioning"]
 build-backend = "hatchling.build"
 
 [project]
@@ -41,43 +41,38 @@ keywords = [
 ]
 dependencies = []
 
+[project.urls]
+"Bug Tracker" = "https://github.com/martinkozle/pulse-eco/issues"
+Homepage = "https://github.com/martinkozle/pulse-eco"
+
 [project.optional-dependencies]
 client = ["pydantic>=2,<3"]
 requests = ["requests>=2.31.0"]
 aiohttp = ["aiohttp>=3.9.0"]
 httpx = ["httpx>=0.25.1"]
-all-http = ["pulse-eco[requests,aiohttp,httpx]"]
-test = [
-    "pulse-eco[client,all-http]",
-    "coverage[toml]~=7.3.4",
-    "pytest~=8.1.1",
-    "pytest-asyncio~=0.23.5",
-    "python-dotenv~=1.0.0",
-]
-types = ["types-requests>=2.31.0"]
-lint = ["pulse-eco[client,all-http,types]", "mypy~=1.8.0", "ruff==0.11.8"]
-docs = [
-    "mkdocs",
-    "mkdocstrings[python]",
-    "pymdown-extensions",
-    "mkdocs-material",
-]
-dev = [
-    "pulse-eco[client,all-http,test,lint,docs]",
-    "pre-commit>=3.5.0",
-    "pip-tools>=7.3.0",
-    "ipython",
-]
 
-[project.urls]
-"Bug Tracker" = "https://github.com/martinkozle/pulse-eco/issues"
-Homepage = "https://github.com/martinkozle/pulse-eco"
+[dependency-groups]
+dev = [
+    "coverage[toml]~=7.3.4",
+    "ipython>=8.12.3",
+    "mkdocs-material>=9.6.12",
+    "mkdocs>=1.6.1",
+    "mkdocstrings[python]>=0.26.1",
+    "mypy~=1.8.0",
+    "pre-commit>=4.2.0",
+    "pymdown-extensions>=10.15",
+    "pytest-asyncio~=0.23.5",
+    "pytest~=8.1.1",
+    "python-dotenv~=1.0.0",
+    "ruff==0.11.8",
+    "types-requests>=2.31.0",
+]
 
 [tool.hatch.version]
-source = "vcs"
+source = "uv-dynamic-versioning"
 
-[tool.hatch.build.hooks.vcs]
-version-file = "pulseeco/_version.py"
+[tool.hatch.build.hooks.version]
+path = "pulseeco/_version.py"
 
 [tool.hatch.build.targets.sdist]
 include = ["/pulseeco"]
@@ -90,9 +85,6 @@ python_version = "3.9"
 plugins = ["pydantic.mypy"]
 modules = ["pulseeco", "tests"]
 strict = true
-
-[tool.black]
-target-version = ["py38"]
 
 [tool.ruff]
 target-version = "py39"
