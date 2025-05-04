@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - main
+    paths:
+      - .github/workflows/docs.yml
+      - mkdocs.yaml
+      - mkdocs/**
+      - pulseeco/**
+      - README.md
 
 jobs:
   publish-docs:

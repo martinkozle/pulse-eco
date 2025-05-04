@@ -4,9 +4,25 @@ on:
   push:
     branches:
       - main
+    paths:
+      - .github/workflows/test.yml
+      - pulseeco/**
+      - tests/**
+      - pyproject.toml
+      - uv.lock
+      - codecov.yml
+      - pytest.ini
   pull_request:
     branches:
       - main
+    paths:
+      - .github/workflows/test.yml
+      - pulseeco/**
+      - tests/**
+      - pyproject.toml
+      - uv.lock
+      - codecov.yml
+      - pytest.ini
   schedule:
     - cron: "0 6 * * 6"
   workflow_dispatch:
