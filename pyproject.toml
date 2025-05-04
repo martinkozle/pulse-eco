@@ -53,17 +53,17 @@ httpx = ["httpx>=0.25.1"]
 
 [dependency-groups]
 dev = [
-    "coverage[toml]~=7.3.4",
+    "coverage[toml]~=7.8.0",
     "ipython>=8.12.3",
     "mkdocs-material>=9.6.12",
     "mkdocs>=1.6.1",
-    "mkdocstrings[python]>=0.26.1",
-    "mypy~=1.8.0",
+    "mkdocstrings[python]>=0.29.1",
+    "mypy~=1.15.0",
     "pre-commit>=4.2.0",
     "pymdown-extensions>=10.15",
-    "pytest-asyncio~=0.23.5",
-    "pytest~=8.1.1",
-    "python-dotenv~=1.0.0",
+    "pytest-asyncio~=0.26.0",
+    "pytest~=8.3.5",
+    "python-dotenv~=1.1.0",
     "ruff==0.11.8",
     "types-requests>=2.31.0",
 ]
