@@ -2,7 +2,7 @@
 
 ![GitHub Workflow Test](https://github.com/martinkozle/pulse-eco/actions/workflows/test.yml/badge.svg)
 [![codecov](https://codecov.io/gh/martinkozle/pulse-eco/branch/main/graph/badge.svg)](https://codecov.io/gh/martinkozle/pulse-eco)
-![GitHub Workflow Build](https://github.com/martinkozle/pulse-eco/actions/workflows/build.yml/badge.svg)
+![GitHub Workflow Release](https://github.com/martinkozle/pulse-eco/actions/workflows/release.yml/badge.svg)
 
 [![PyPI](https://img.shields.io/pypi/v/pulse-eco?logo=pypi&label=PyPI&logoColor=gold)](https://pypi.org/project/pulse-eco)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pulse-eco)
@@ -47,31 +47,24 @@ If the time range is larger than the maximum, the pulse-eco Python client perfor
 
 ## Development
 
-### Install Hatch
+### Install UV
 
-<https://hatch.pypa.io/latest/install/>
+<https://docs.astral.sh/uv/getting-started/installation/>
 
-### Create dev environment
+### Install package dependencies
 
-Activate a Python 3.9 environment and run:
-
-```console
-hatch env create dev
-```
-
-To delete the environment, run:
 
 ```console
-hatch env remove dev
+uv sync --all-extras
 ```
 
 ### Install pre-commit hooks
 
 ```console
-hatch run dev:setup
+pre-commit install
 ```
 
-### Create .env file
+### Create .env file (optional)
 
 Set auth credentials in `.env` file:
 
@@ -81,10 +74,10 @@ cp .env.example .env
 
 ### Before committing
 
-This command must pass without errors before committing:
+This command should pass without errors before committing:
 
 ```console
-hatch run dev:check
+./scripts/check.sh
 ```
 
 ### Docs
@@ -92,5 +85,5 @@ hatch run dev:check
 To preview the docs locally, run:
 
 ```console
-hatch run dev:docs-serve
+uv run mkdocs serve
 ```
