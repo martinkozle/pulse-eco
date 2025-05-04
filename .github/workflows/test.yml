@@ -8,6 +8,8 @@ on:
       - .github/workflows/test.yml
       - pulseeco/**
       - tests/**
+      - scripts/lint.sh
+      - scripts/cov.sh
       - pyproject.toml
       - uv.lock
       - codecov.yml
@@ -19,6 +21,8 @@ on:
       - .github/workflows/test.yml
       - pulseeco/**
       - tests/**
+      - scripts/lint.sh
+      - scripts/cov.sh
       - pyproject.toml
       - uv.lock
       - codecov.yml
@@ -58,7 +62,7 @@ jobs:
 
       - if: matrix.python-version == '3.9' && runner.os == 'Linux'
         name: Lint
-        run: ./scripts/style.sh
+        run: ./scripts/lint.sh
 
       - name: Run tests
         run: ./scripts/cov.sh

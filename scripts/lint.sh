@@ -1,8 +1,11 @@
 #!/bin/sh
 set -e
 
-# Run Ruff checks
+echo "Run Ruff checks"
 ruff check pulseeco tests
 
-# Check formatting
+echo "Check formatting"
 ruff format --check --diff pulseeco tests
+
+echo "Run mypy type checking"
+mypy .

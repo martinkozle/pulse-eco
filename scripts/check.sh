@@ -1,11 +1,11 @@
 #!/bin/sh
 set -e
 
-# Run pre-commit hooks
+echo "Run pre-commit hooks"
 pre-commit run --all-files
 
-# Run typing checks
-mypy pulseeco tests
+echo "Run lint checks"
+./scripts/lint.sh
 
-# Run coverage
-bash scripts/cov.sh
+echo "Run coverage"
+./scripts/cov.sh
