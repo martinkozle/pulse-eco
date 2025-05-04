@@ -1,18 +1,10 @@
 from __future__ import annotations
 
+import datetime  # noqa: TC003
 import warnings
-from typing import TYPE_CHECKING, Any, Optional
+from typing import Annotated, Any, Optional
 
-if TYPE_CHECKING:
-    import datetime
-
-    from .enums import (
-        DataValueType,
-        SensorStatus,
-        SensorType,
-    )
-
-from typing import Annotated
+from .enums import DataValueType, SensorStatus, SensorType  # noqa: TC001
 
 try:
     from pydantic import BaseModel, BeforeValidator, ConfigDict, Field, TypeAdapter
@@ -46,11 +38,11 @@ class DataValue(BaseModel):
         description="Timestamp of when the measurement was taken"
     )
     type: DataValueType = Field(description="The type of the data value taken")
-    position: str | None = Field(
+    position: Optional[str] = Field(  # noqa: UP045
         description="Latitude and longitude GPS coordinates of the sensor"
     )
     value: int = Field(description="The actual value of the measurement taken")
-    year: int | None = Field(
+    year: Optional[int] = Field(  # noqa: UP045
         default=None,
         description="Year when the measurement was taken"
         ", not included with newer data, prefer stamp",
