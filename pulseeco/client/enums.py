@@ -24,6 +24,8 @@ class SensorType(StrEnum):
     TYPE_3 = "3"
     # pulse.eco LoRaWAN based sensor. version 2
     TYPE_4 = "4"
+    # TODO: check what it is
+    TYPE_6 = "6"
     # pengy device, version 1
     TYPE_20001 = "20001"
     # URAD Monitor device
