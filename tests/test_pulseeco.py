@@ -150,7 +150,7 @@ def test_custom_pulse_eco_api() -> None:
     ), "`_pulse_eco_api` should be the same as the passed object"
 
 
-@pytest.mark.asyncio(scope="session")
+@pytest.mark.asyncio(loop_scope="session")
 async def test_sensor_skopje(
     pulse_eco_skopje: PulseEcoClient, pulse_eco_skopje_async_httpx: PulseEcoClient
 ) -> None:
@@ -209,7 +209,7 @@ def test_split_datetime_span_edge_case() -> None:
     assert datetimes == expected_datetimes, "datetime split should be consistent"
 
 
-@pytest.mark.asyncio(scope="session")
+@pytest.mark.asyncio(loop_scope="session")
 async def test_data_raw_skopje(
     pulse_eco_skopje: PulseEcoClient, pulse_eco_skopje_async_httpx: PulseEcoClient
 ) -> None:
@@ -247,7 +247,7 @@ def test_data_raw_past_span(
             )
 
 
-@pytest.mark.asyncio(scope="session")
+@pytest.mark.asyncio(loop_scope="session")
 async def test_avg_data(
     pulse_eco_skopje: PulseEcoClient, pulse_eco_skopje_async_httpx: PulseEcoClient
 ) -> None:
@@ -272,7 +272,7 @@ async def test_avg_data(
         assert len(avg_data) > 0, "there should be at least one data value"
 
 
-@pytest.mark.asyncio(scope="session")
+@pytest.mark.asyncio(loop_scope="session")
 async def test_data24h(
     pulse_eco_skopje: PulseEcoClient, pulse_eco_skopje_async_httpx: PulseEcoClient
 ) -> None:
@@ -282,7 +282,7 @@ async def test_data24h(
     assert len(data24h_async) > 0, "there should be at least one data value"
 
 
-@pytest.mark.asyncio(scope="session")
+@pytest.mark.asyncio(loop_scope="session")
 async def test_current(
     pulse_eco_skopje: PulseEcoClient, pulse_eco_skopje_async_httpx: PulseEcoClient
 ) -> None:
@@ -306,7 +306,7 @@ def test_overall(cities: list[str]) -> None:
         )
 
 
-@pytest.mark.asyncio(scope="session")
+@pytest.mark.asyncio(loop_scope="session")
 async def test_aoverall(pulse_eco_skopje_async_httpx: PulseEcoClient) -> None:
     overall = await pulse_eco_skopje_async_httpx.aoverall()
     model_extra = overall.values.model_extra
@@ -315,7 +315,7 @@ async def test_aoverall(pulse_eco_skopje_async_httpx: PulseEcoClient) -> None:
     )
 
 
-@pytest.mark.asyncio(scope="session")
+@pytest.mark.asyncio(loop_scope="session")
 async def test_compare_http_clients(
     pulse_eco_skopje: PulseEcoClient,
     pulse_eco_skopje_requests: PulseEcoClient,
